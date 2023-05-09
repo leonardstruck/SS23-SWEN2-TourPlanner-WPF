@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <RootNamespace>SS23_SWEN2_TourPlanner_WPF.Views</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="Menu.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Search.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="TourDetails.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="TourList.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="TourLogs.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

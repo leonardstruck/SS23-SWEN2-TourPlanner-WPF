@@ -9,7 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Views\Views.csproj" />
+    <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF.Log4Net\SS23-SWEN2-TourPlanner-WPF.Log4Net.csproj" />
+    <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF.ViewModels\SS23-SWEN2-TourPlanner-WPF.ViewModels.csproj" />
+    <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF.Views\SS23-SWEN2-TourPlanner-WPF.Views.csproj" />
   </ItemGroup>
 
 </Project>
