@@ -6,19 +6,38 @@
         xmlns:views="clr-namespace:Views;assembly=SS23-SWEN2-TourPlanner-WPF.Views"
         xmlns:local="clr-namespace:SS23_SWEN2_TourPlanner_WPF"
         mc:Ignorable="d"
-        Title="Tour Planner" Height="450" Width="800">
+        Title="Tour Planner" Height="450" Width="800" MinHeight="450" MinWidth="600">
     <Grid>
         <DockPanel>
 
             <views:Menu DockPanel.Dock="Top" />
             <views:Search DockPanel.Dock="Top" />
-            <views:TourList DockPanel.Dock="Left" />
             
-            <DockPanel DockPanel.Dock="Right">
-                <views:TourDetails DockPanel.Dock="Top" MinHeight="200" />
-                <views:TourLogs DockPanel.Dock="Top" />
-            </DockPanel>
-
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120*" MinWidth="200"/>
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="240*" MinWidth="400" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <views:TourList Grid.Column="0" Grid.Row="0"/>
+                <GridSplitter Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch"/>
+                <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50*" MinHeight="200"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="50*" MinHeight="200"/>
+                    </Grid.RowDefinitions>
+                    <views:TourDetails Grid.Row="0" />
+                    <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Height="5" />
+                    <views:TourList Grid.Row="2"/>
+                </Grid>
+            </Grid>
 
         </DockPanel>
 
