@@ -1,0 +1,10 @@
+﻿<Application x:Class="SS23_SWEN2_TourPlanner_WPF.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SS23_SWEN2_TourPlanner_WPF"
+             Startup="App_OnStartup"
+          >
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
