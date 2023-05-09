@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Views
 {
     /// <summary>
-    /// Interaction logic for TourList.xaml
+    /// Interaction logic for Search.xaml
     /// </summary>
-    public partial class TourList : UserControl
+    public partial class SearchView : UserControl
     {
-        public TourList()
+        public SearchView()
         {
             InitializeComponent();
         }

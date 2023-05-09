@@ -18,9 +18,9 @@ namespace Views
     /// <summary>
     /// Interaction logic for Menu.xaml
     /// </summary>
-    public partial class Menu : UserControl
+    public partial class MenuView : UserControl
     {
-        public Menu()
+        public MenuView()
         {
             InitializeComponent();
         }

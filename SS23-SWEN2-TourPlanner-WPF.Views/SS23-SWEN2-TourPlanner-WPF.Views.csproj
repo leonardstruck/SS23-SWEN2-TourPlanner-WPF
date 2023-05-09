@@ -8,16 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Menu.xaml.cs">
+    <Compile Update="MenuView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Search.xaml.cs">
+    <Compile Update="SearchView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="TourDetails.xaml.cs">
+    <Compile Update="TourDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="TourList.xaml.cs">
+    <Compile Update="TourListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="TourLogs.xaml.cs">
