@@ -9,9 +9,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF.Log4Net\SS23-SWEN2-TourPlanner-WPF.Log4Net.csproj" />
-    <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF.ViewModels\SS23-SWEN2-TourPlanner-WPF.ViewModels.csproj" />
-    <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF.Views\SS23-SWEN2-TourPlanner-WPF.Views.csproj" />
+    <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF.Models\SS23-SWEN2-TourPlanner-WPF.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\MenuView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SearchView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TourDetailsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TourListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TourLogs.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>

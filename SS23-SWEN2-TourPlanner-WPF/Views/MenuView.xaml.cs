@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Views
+namespace SS23_SWEN2_TourPlanner_WPF.Views
 {
     /// <summary>
-    /// Interaction logic for Search.xaml
+    /// Interaction logic for Menu.xaml
     /// </summary>
-    public partial class SearchView : UserControl
+    public partial class MenuView : UserControl
     {
-        public SearchView()
+        public MenuView()
         {
             InitializeComponent();
         }

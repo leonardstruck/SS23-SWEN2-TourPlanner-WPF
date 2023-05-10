@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SS23_SWEN2_TourPlanner_WPF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Views
+namespace SS23_SWEN2_TourPlanner_WPF.Views
 {
     /// <summary>
     /// Interaction logic for TourListView.xaml
