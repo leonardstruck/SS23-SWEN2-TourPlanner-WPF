@@ -16,7 +16,19 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
         {
             _context = new TourDbContext();
 
+            bool recreate = true;
+            if (recreate)
+                _context.Database.EnsureDeleted();
+
             _context.Database.EnsureCreated();
+
+            if (recreate)
+            {
+                _context.Tours.Add(new Tour("Tour 1"));
+                _context.Tours.Add(new Tour("Tour 2"));
+                _context.SaveChanges();
+            }
+
         }
 
         public void AddTour(Tour t)

@@ -24,6 +24,14 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
         public Tour(string Name)
         {
             this.Name = Name;
+            this.Description = string.Empty;
+            this.From = string.Empty;
+            this.To = string.Empty;
+            this.TransportType = string.Empty;
+            this.Distance = 0;
+            this.Time = 0;
+            this.Image = string.Empty;
+     
         }
     }
 }
