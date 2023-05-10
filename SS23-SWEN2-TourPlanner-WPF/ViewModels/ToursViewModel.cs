@@ -1,4 +1,5 @@
-﻿using SS23_SWEN2_TourPlanner_WPF.Models;
+﻿using SS23_SWEN2_TourPlanner_WPF.BL;
+using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,12 +11,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 {
     public class ToursViewModel : BaseViewModel
     {
-        public ObservableCollection<Tour> Tours { get; }
+        public ObservableCollection<Tour> Tours { get; } = new();
 
-        public ToursViewModel()
+        public ToursViewModel(IToursManager toursManager)
         {
-
-            Tours = new ObservableCollection<Tour>() { new Tour("Tour 1"), new Tour("Tour 2") };
+            toursManager.GetTours().ToList().ForEach(t =>  Tours.Add(t));
         }
     }
 }

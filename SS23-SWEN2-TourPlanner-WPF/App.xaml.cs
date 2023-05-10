@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using SS23_SWEN2_TourPlanner_WPF.BL;
+using SS23_SWEN2_TourPlanner_WPF.DAL;
 using SS23_SWEN2_TourPlanner_WPF.ViewModels;
 
 namespace SS23_SWEN2_TourPlanner_WPF
@@ -29,6 +31,10 @@ namespace SS23_SWEN2_TourPlanner_WPF
         private static IServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
+
+            // create all layers
+            services.AddSingleton<IDataManager, DataManagerEFImpl>();
+            services.AddSingleton<IToursManager, ToursManagerImpl>();
 
             // create viewmodels
             services.AddSingleton<ToursViewModel>();
