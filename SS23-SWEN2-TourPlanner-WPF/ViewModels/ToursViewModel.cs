@@ -15,7 +15,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         public ToursViewModel()
         {
 
-            Tours = new ObservableCollection<Tour>() { new Tour(), new Tour() };
+            Tours = new ObservableCollection<Tour>() { new Tour("Tour 1"), new Tour("Tour 2") };
         }
     }
 }

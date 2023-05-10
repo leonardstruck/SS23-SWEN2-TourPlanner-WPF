@@ -19,5 +19,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
         public double Time { get; set; }
         public string Image { get; set; } // path to image
         public List<TourLog> TourLogs { get; } = new();
+
+
+        public Tour(string Name)
+        {
+            this.Name = Name;
+        }
     }
 }

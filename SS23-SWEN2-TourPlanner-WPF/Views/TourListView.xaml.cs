@@ -24,6 +24,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Views
         public TourListView()
         {
             InitializeComponent();
+            this.DataContext = App.Current.Services.GetService(typeof(ToursViewModel));
         }
     }
 }
