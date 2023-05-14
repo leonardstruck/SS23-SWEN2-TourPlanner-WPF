@@ -7,7 +7,10 @@
              d:DesignHeight="450" d:DesignWidth="800"
              >
     <DockPanel>
-        <Label Content="Tours" DockPanel.Dock="Top"/>
+        <Label Content="Tours" DockPanel.Dock="Top" Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}" FontWeight="DemiBold" FontSize="13"/>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Add" Command="{Binding Path=CreateTourCommand}"/>
+        </Menu>
         <ListBox DockPanel.Dock="Top" ItemsSource="{Binding Path=Tours}">
             <ListBox.ItemTemplate>
                 <DataTemplate>

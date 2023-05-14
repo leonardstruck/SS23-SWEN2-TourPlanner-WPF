@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace SS23_SWEN2_TourPlanner_WPF.Models
 {
+    public enum TransportType
+    {
+        AUTO,
+        WALKING,
+        BICYCLE
+    }
+
     public class Tour
     {
         public int Id { get; set; }

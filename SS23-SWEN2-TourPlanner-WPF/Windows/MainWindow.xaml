@@ -9,7 +9,7 @@
     <Grid>
         <DockPanel>
             <views:MenuView DockPanel.Dock="Top" />
-            <views:SearchView DockPanel.Dock="Top" />
+            <views:SearchView DockPanel.Dock="Top"/>
             
             <Grid>
                 <Grid.ColumnDefinitions>
