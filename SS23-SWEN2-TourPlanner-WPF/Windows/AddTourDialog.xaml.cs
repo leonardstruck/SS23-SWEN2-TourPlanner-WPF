@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SS23_SWEN2_TourPlanner_WPF.Models;
+using SS23_SWEN2_TourPlanner_WPF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,13 @@ namespace SS23_SWEN2_TourPlanner_WPF.Windows
     /// </summary>
     public partial class AddTourDialog : Window
     {
-        public AddTourDialog()
+        public AddTourDialog(AddTourViewModel addTourViewModel)
         {
             InitializeComponent();
+            DataContext = addTourViewModel;
+
+            // Populate Combobox with available TransportTypes (Enum)
+            CBTransportMode.ItemsSource = Enum.GetValues(typeof(TourTransportType));
         }
     }
 }
