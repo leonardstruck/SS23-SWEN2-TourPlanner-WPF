@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SS23_SWEN2_TourPlanner_WPF
+namespace SS23_SWEN2_TourPlanner_WPF.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

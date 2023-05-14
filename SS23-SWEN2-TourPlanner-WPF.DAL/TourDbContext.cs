@@ -2,6 +2,7 @@
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=10.211.55.2;Database=tourplanner;Username=postgres;Password=changeme");
+            string connectionString = ConfigurationManager.ConnectionStrings["PostgreSQLConnectionString"].ConnectionString;
+            optionsBuilder.UseNpgsql(connectionString);
         }
     }
 }
