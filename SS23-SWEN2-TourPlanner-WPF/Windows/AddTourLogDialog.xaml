@@ -1,0 +1,32 @@
+﻿<Window x:Class="SS23_SWEN2_TourPlanner_WPF.Windows.AddTourLogDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SS23_SWEN2_TourPlanner_WPF.Windows"
+        xmlns:wpfTool="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:viewmodels="clr-namespace:SS23_SWEN2_TourPlanner_WPF.ViewModels"
+
+        d:DataContext="{d:DesignInstance Type=viewmodels:AddTourLogViewModel}"
+        mc:Ignorable="d"
+        Title="Add Tour Log" Height="450" Width="400">
+    <StackPanel Margin="5">
+        <Label Content="Date / Time:" />
+        <wpfTool:DateTimePicker Value="{Binding DateTime}" />
+
+        <Label Content="Comment" Margin="0 10 0 0"/>
+        <TextBox Text="{Binding Comment}" />
+
+        <Label Content="Difficulty" Margin="0 10 0 0"/>
+        <ComboBox x:Name="CBDifficulty"  SelectedItem="{Binding Difficulty}"/>
+
+        <Label Content="Total Time (Days.Hours:Minutes:Seconds)" Margin="0 10 0 0" />
+        <wpfTool:TimeSpanUpDown Value="{Binding TimeSpan}"  Minimum="0" />
+
+        <Label Content="Rating (0-5)" Margin="0 10 0 0" />
+        <wpfTool:IntegerUpDown Value="{Binding Rating}" Minimum="0" Maximum="5" />
+
+        <Button Content="Save Tour-Log" Margin="0 10 0 0" Height="40" Command="{Binding ExecuteCommandAdd}"/>
+
+    </StackPanel>
+</Window>
