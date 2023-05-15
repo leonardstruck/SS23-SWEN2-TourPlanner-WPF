@@ -16,7 +16,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
         {
             _context = new TourDbContext();
 
-            bool recreate = true;
+            bool recreate = false;
             if (recreate)
                 _context.Database.EnsureDeleted();
 

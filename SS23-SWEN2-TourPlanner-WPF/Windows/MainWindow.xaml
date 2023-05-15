@@ -15,8 +15,8 @@
         <DockPanel>
             <views:MenuView DockPanel.Dock="Top" />
             <views:SearchView DockPanel.Dock="Top"/>
-            
-            <Grid>
+
+            <Grid Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="120*" MinWidth="200"/>
                     <ColumnDefinition Width="5" />
