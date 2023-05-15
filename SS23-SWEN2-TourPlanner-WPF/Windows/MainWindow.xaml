@@ -38,6 +38,7 @@
                     </Grid.RowDefinitions>
                     <views:TourDetailsView Grid.Row="0" />
                     <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Height="5" />
+                    <views:TourLogs Grid.Row="2" />
                 </Grid>
             </Grid>
 

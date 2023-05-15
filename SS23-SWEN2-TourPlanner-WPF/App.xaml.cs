@@ -21,6 +21,9 @@ namespace SS23_SWEN2_TourPlanner_WPF
         {
             Services = ConfigureServices();
 
+            // Allow Local Timestamps in NpgSQL
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
             this.InitializeComponent();
         }
 

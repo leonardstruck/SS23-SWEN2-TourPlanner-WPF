@@ -3,9 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:SS23_SWEN2_TourPlanner_WPF.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:ToursViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <TabControl>
-        <TabItem Header="Tour Logs" />
-    </TabControl>
+    <DockPanel>
+        <Label DockPanel.Dock="Top" FontWeight="SemiBold" FontSize="13">Tour Logs</Label>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Add" />
+        </Menu>
+        <ListView DockPanel.Dock="Top" ItemsSource="{Binding Path=CurrentTour.TourLogs}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Path=DateTime}"/>
+                    <GridViewColumn Header="Comment" DisplayMemberBinding="{Binding Path=Comment}"/>
+                    <GridViewColumn Header="Difficulty" DisplayMemberBinding="{Binding Path=Difficulty}"/>
+                    <GridViewColumn Header="Total Time" DisplayMemberBinding="{Binding Path=TotalTime}"/>
+                    <GridViewColumn Header="Rating" DisplayMemberBinding="{Binding Path=Rating}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </DockPanel>
 </UserControl>
