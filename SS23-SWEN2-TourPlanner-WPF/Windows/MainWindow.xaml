@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:SS23_SWEN2_TourPlanner_WPF.Views"
         mc:Ignorable="d"
+        xmlns:viewmodels="clr-namespace:SS23_SWEN2_TourPlanner_WPF.ViewModels"
+        d:DataContext="{d:DesignInstance Type=viewmodels:ToursViewModel}"
         Title="Tour Planner" Height="450" Width="800" MinHeight="450" MinWidth="600">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="btvc" />
+    </Window.Resources>
     <Grid>
         <DockPanel>
             <views:MenuView DockPanel.Dock="Top" />
@@ -22,7 +27,7 @@
                 </Grid.RowDefinitions>
                 <views:TourListView Grid.Column="0" Grid.Row="0"/>
                 <GridSplitter Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch"/>
-                <Grid Grid.Column="2">
+                <Grid Grid.Column="2" Visibility="{Binding TourSelected, Converter={StaticResource btvc}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
