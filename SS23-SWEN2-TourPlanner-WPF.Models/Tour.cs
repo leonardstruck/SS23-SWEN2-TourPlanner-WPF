@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace SS23_SWEN2_TourPlanner_WPF.Models
 {
+    public enum TourTransportType
+    {
+        Walking,
+        Bicycle,
+        Auto
+    }
+
     public class Tour
     {
         public int Id { get; set; }
@@ -14,12 +21,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
         public string Description { get; set; }
         public string From { get; set; }
         public string To { get; set; }
-        public string TransportType { get; set; }
+        public TourTransportType TransportType { get; set; }
         public double Distance { get; set; }
         public double Time { get; set; }
         public string Image { get; set; } // path to image
         public List<TourLog> TourLogs { get; } = new();
-
 
         public Tour(string Name)
         {
@@ -27,7 +33,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
             this.Description = string.Empty;
             this.From = string.Empty;
             this.To = string.Empty;
-            this.TransportType = string.Empty;
+            this.TransportType = TourTransportType.Walking;
             this.Distance = 0;
             this.Time = 0;
             this.Image = string.Empty;

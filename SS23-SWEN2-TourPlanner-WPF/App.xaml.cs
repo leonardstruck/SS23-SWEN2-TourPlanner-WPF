@@ -38,6 +38,7 @@ namespace SS23_SWEN2_TourPlanner_WPF
 
             // create viewmodels
             services.AddSingleton<ToursViewModel>();
+            services.AddTransient<AddTourViewModel>();
 
             return services.BuildServiceProvider();
         }
