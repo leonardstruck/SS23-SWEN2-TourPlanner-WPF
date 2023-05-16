@@ -3,6 +3,7 @@ using SS23_SWEN2_TourPlanner_WPF.DAL;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,6 +40,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
         public void DeleteTour(Tour tour)
         {
+            // delete images
+            if (File.Exists(tour.Image))
+            {
+                // If file found, delete it    
+                // File.Delete(tour.Image);
+            }
             _dataManager.DeleteTour(tour);
         }
 

@@ -27,18 +27,22 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             set {
                 // load tour from toursmanager
                 _currentTour = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TourSelected));
+
                 if (_currentTour == null)
                     return;
+                
 
                 TourLogsVM = new TourLogsViewModel(toursmanager, _currentTour);
  
-                OnPropertyChanged();
                 OnPropertyChanged(nameof(TourLogsVM));
-                OnPropertyChanged(nameof(TourSelected));
             } 
         }
 
         private Tour? _currentTour;
+        public bool IsDetailViewVisible { get; set; }
+
 
         public Boolean TourSelected
         {
@@ -70,9 +74,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             {
                 if (TourSelected)
                 {
-                    toursManager.DeleteTour(CurrentTour);
-                    Tours.Remove(Tours.Where(i => i.Id == CurrentTour.Id).Single());
+                    var temp = CurrentTour;
                     CurrentTour = null;
+                    toursManager.DeleteTour(temp);
+                    Tours.Remove(Tours.Where(i => i.Id == temp.Id).Single());
                 }
             });
 
