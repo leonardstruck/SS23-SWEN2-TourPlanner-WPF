@@ -1,4 +1,5 @@
-﻿using SS23_SWEN2_TourPlanner_WPF.ViewModels;
+﻿using SS23_SWEN2_TourPlanner_WPF.Models;
+using SS23_SWEN2_TourPlanner_WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,21 +12,20 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace SS23_SWEN2_TourPlanner_WPF.Windows
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for AddTourLogDialog.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AddTourLogDialog : Window
     {
-        public MainWindow()
+        public AddTourLogDialog(AddTourLogViewModel addTourLogViewModel)
         {
             InitializeComponent();
-            var toursVM = App.Current.Services.GetService(typeof(ToursViewModel)) as ToursViewModel;
-            this.DataContext = toursVM;
+            this.CBDifficulty.ItemsSource = Enum.GetValues(typeof(Difficulty));
+            this.DataContext = addTourLogViewModel;
         }
     }
 }

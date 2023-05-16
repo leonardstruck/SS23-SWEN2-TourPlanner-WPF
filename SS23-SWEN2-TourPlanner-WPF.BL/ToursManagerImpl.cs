@@ -24,5 +24,9 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             return _dataManager.GetTours();
         }
 
+        public void AddTourLog(Tour tour, TourLog tourLog)
+        {
+            _dataManager.AddTourLog(tour, tourLog);
+        }
     }
 }

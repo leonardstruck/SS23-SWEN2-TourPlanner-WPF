@@ -15,6 +15,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
     public class ToursViewModel : BaseViewModel
     {
         private readonly IToursManager toursmanager;
+        public TourLogsViewModel? TourLogsVM { get; set; }
 
         public ObservableCollection<Tour> Tours { get; } = new();
         public RelayCommand CreateTourCommand { get; }
@@ -22,8 +23,15 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         public Tour? CurrentTour { 
             get { return _currentTour; } 
             set {
+                // load tour from toursmanager
                 _currentTour = value;
+                if (_currentTour == null)
+                    return;
+
+                TourLogsVM = new TourLogsViewModel(toursmanager, _currentTour);
+ 
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(TourLogsVM));
                 OnPropertyChanged(nameof(TourSelected));
             } 
         }
@@ -56,8 +64,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     }
                 }
             );
-
-
         }
     }
 }

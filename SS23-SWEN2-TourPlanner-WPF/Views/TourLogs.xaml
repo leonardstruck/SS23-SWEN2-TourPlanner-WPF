@@ -4,15 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewmodels="clr-namespace:SS23_SWEN2_TourPlanner_WPF.ViewModels" 
-             d:DataContext="{d:DesignInstance Type=viewmodels:ToursViewModel}"
+             d:DataContext="{d:DesignInstance Type=viewmodels:TourLogsViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
         <Label DockPanel.Dock="Top" FontWeight="SemiBold" FontSize="13">Tour Logs</Label>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Add" />
+            <MenuItem Header="Add" Command="{Binding AddTourLogCommand}"/>
         </Menu>
-        <ListView DockPanel.Dock="Top" ItemsSource="{Binding Path=CurrentTour.TourLogs}">
+        <ListView DockPanel.Dock="Top" ItemsSource="{Binding TourLogs}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Path=DateTime}"/>

@@ -34,7 +34,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
                 {
                     Comment = "This is a comment",
                     DateTime = DateTime.Now,
-                    Difficulty = 1,
+                    Difficulty = Difficulty.Easy,
                     Rating = 5,
                     TotalTime = TimeSpan.FromMinutes(5),
                 });
@@ -48,6 +48,13 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
         public void AddTour(Tour t)
         {
             _context.Tours.Add(t);
+            _context.SaveChanges();
+        }
+
+        public void AddTourLog(Tour tour, TourLog tourLog)
+        {
+            var tourFromDB = _context.Tours.Include(t => t.TourLogs).Single(t => t.Id == tour.Id);
+            tourFromDB.TourLogs.Add(tourLog);
             _context.SaveChanges();
         }
 
