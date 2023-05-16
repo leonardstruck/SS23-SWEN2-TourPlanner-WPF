@@ -24,7 +24,21 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
 
             if (recreate)
             {
-                _context.Tours.Add(new Tour("Tour 1"));
+                var Tour1 = new Tour("Tour 1")
+                {
+                    Description = "This is the description for Tour 1",
+                    From = "Corneliusgasse 4, 1060 Wien",
+                    To = "Kaunitzgasse 11, 1060 Wien",
+                };
+                Tour1.TourLogs.Add(new TourLog
+                {
+                    Comment = "This is a comment",
+                    DateTime = DateTime.Now,
+                    Difficulty = 1,
+                    Rating = 5,
+                    TotalTime = TimeSpan.FromMinutes(5),
+                });
+                _context.Tours.Add(Tour1);
                 _context.Tours.Add(new Tour("Tour 2"));
                 _context.SaveChanges();
             }

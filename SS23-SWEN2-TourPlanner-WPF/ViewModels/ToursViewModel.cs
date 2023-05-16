@@ -19,6 +19,22 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         public ObservableCollection<Tour> Tours { get; } = new();
         public RelayCommand CreateTourCommand { get; }
 
+        public Tour? CurrentTour { 
+            get { return _currentTour; } 
+            set {
+                _currentTour = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TourSelected));
+            } 
+        }
+
+        private Tour? _currentTour;
+
+        public Boolean TourSelected
+        {
+            get { return CurrentTour != null; }
+        }
+
         public ToursViewModel(IToursManager toursManager)
         {
             this.toursmanager = toursManager;

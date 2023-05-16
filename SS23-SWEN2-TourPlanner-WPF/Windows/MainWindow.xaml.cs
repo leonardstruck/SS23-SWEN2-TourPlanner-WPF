@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SS23_SWEN2_TourPlanner_WPF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Windows
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = App.Current.Services.GetService(typeof(ToursViewModel));
         }
     }
 }
