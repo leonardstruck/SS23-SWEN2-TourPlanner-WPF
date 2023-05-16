@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SS23_SWEN2_TourPlanner.DAL;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
@@ -45,8 +46,9 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
 
         }
 
-        public void AddTour(Tour t)
+        public void AddTourAsync(Tour t)
         {
+            
             _context.Tours.Add(t);
             _context.SaveChanges();
         }
