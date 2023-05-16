@@ -60,10 +60,13 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     };
                 }
             });
-            DeleteTourLogCommand = new RelayCommand(_ => { 
-                // delete TourLog from db
-
-                // delete Tourlog from observableCollection
+            DeleteTourLogCommand = new RelayCommand(_ => {
+                if (CurrentTourLog != null)
+                {
+                    toursManager.DeleteTourLog(tour, CurrentTourLog);
+                    TourLogs.Remove(TourLogs.Where(i => i.Id == CurrentTourLog.Id).Single());
+                    CurrentTourLog = null;
+                }
             });
         }
     }

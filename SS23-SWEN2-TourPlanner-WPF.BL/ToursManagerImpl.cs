@@ -33,5 +33,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         {
             _dataManager.DeleteTour(tour);
         }
+
+        public void DeleteTourLog(Tour tour, TourLog tourLog)
+        {
+            _dataManager.DeleteTourLog(tour, tourLog);
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
 
         void AddTourLog(Tour tour, TourLog tourLog);
         void DeleteTour(Tour tour);
+        void DeleteTourLog(Tour tour, TourLog tourLog);
         IEnumerable<Tour> GetTours();
     }
 }
