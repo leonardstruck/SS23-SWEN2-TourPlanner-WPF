@@ -11,8 +11,9 @@
         <Label DockPanel.Dock="Top" FontWeight="SemiBold" FontSize="13">Tour Logs</Label>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Add" Command="{Binding AddTourLogCommand}"/>
+            <MenuItem Header="Delete" Command="{Binding DeleteTourLogCommand}"/>
         </Menu>
-        <ListView DockPanel.Dock="Top" ItemsSource="{Binding TourLogs}">
+        <ListView DockPanel.Dock="Top" ItemsSource="{Binding TourLogs}" SelectedItem="{Binding CurrentTourLog}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Path=DateTime}"/>
