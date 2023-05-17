@@ -19,6 +19,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 
         public ObservableCollection<Tour> Tours { get; } = new();
         public RelayCommand CreateTourCommand { get; }
+        public RelayCommand DeleteTourCommand { get; }
         public RelayCommand EditTourCommand { get; }
 
         public Tour? CurrentTour { 
@@ -65,6 +66,13 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     }
                 }
             );
+            this.DeleteTourCommand = new RelayCommand(_ => {
+                if (CurrentTour != null)
+                {
+                    toursManager.DeleteTour(CurrentTour);
+                    Tours.Remove(Tours.Where(i => i.Id == CurrentTour.Id).Single());
+                    CurrentTour = null;
+                }
             this.EditTourCommand = new RelayCommand(param =>
             {
                 if (CurrentTour == null)

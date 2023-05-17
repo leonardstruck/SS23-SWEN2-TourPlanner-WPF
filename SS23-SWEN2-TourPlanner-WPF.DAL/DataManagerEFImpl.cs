@@ -64,6 +64,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
             _context.SaveChanges();
         }
 
+        public void DeleteTour(Tour tour)
+        {
+            _context.Tours.Remove(tour);
+            _context.SaveChanges();
+        }
 
         public IEnumerable<Tour> GetTours()
         {

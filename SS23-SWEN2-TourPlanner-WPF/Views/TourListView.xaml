@@ -12,8 +12,8 @@
         <Label Content="Tours" DockPanel.Dock="Top" Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}" FontWeight="DemiBold" FontSize="13"/>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Add" Command="{Binding Path=CreateTourCommand}"/>
+            <MenuItem Header="Delete" Command="{Binding Path=DeleteTourCommand}"/>
             <MenuItem Header="Edit" Command="{Binding Path=EditTourCommand}"/>
-
         </Menu>
         <ListBox DockPanel.Dock="Top" ItemsSource="{Binding Tours}" SelectedItem="{Binding CurrentTour}">
             <ListBox.ItemTemplate>
