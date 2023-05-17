@@ -19,6 +19,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 
         public ObservableCollection<Tour> Tours { get; } = new();
         public RelayCommand CreateTourCommand { get; }
+        public RelayCommand EditTourCommand { get; }
 
         public Tour? CurrentTour { 
             get { return _currentTour; } 
@@ -64,6 +65,39 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     }
                 }
             );
+            this.EditTourCommand = new RelayCommand(param =>
+            {
+                if (CurrentTour == null)
+                    return;
+
+                var editTourVM = new EditTourViewModel(CurrentTour);
+
+                var editTourDialog = new EditTourDialog(editTourVM);
+                editTourDialog.Show();
+
+                editTourVM.EditButtonClicked += (_, tour) =>
+                {
+                    toursManager.EditTour(tour);
+
+                    // Replace tour in Tour List with the changed tour
+                    // find tour that has the same Id
+                    var tourInList = Tours.Single(t =>  t.Id == tour.Id);
+                    if (tourInList == null)
+                        return;
+
+                    int index = Tours.IndexOf(tourInList);
+                    if (index != -1)
+                    {
+                        Tours.RemoveAt(index);
+                        Tours.Insert(index, tour);
+                    }
+
+                    CurrentTour = tour;
+                    
+                    
+                    editTourDialog?.Close();
+                };
+            });
         }
     }
 }
