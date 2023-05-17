@@ -16,11 +16,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
         public ToursManagerImpl(IDataManager dataManager) {  _dataManager = dataManager; }
 
-        public async Task AddTour(Tour t)
+        public async Task<Tour> AddTour(Tour t)
         {
             var map = new Map(t);
             t.Image = await map.CreateMap();
             _dataManager.AddTourAsync(t);
+            return t;
         }
 
         public void EditTour(Tour t)
@@ -43,8 +44,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             // delete images
             if (File.Exists(tour.Image))
             {
-                // If file found, delete it    
-                // File.Delete(tour.Image);
+                File.Delete(tour.Image);
             }
             _dataManager.DeleteTour(tour);
         }

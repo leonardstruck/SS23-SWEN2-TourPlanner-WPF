@@ -11,6 +11,16 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 {
     public class AddTourViewModel : BaseViewModel
     {
+        private Boolean _isBusy;
+        public Boolean IsEnabled
+        {
+            get => !_isBusy;
+            set { 
+                _isBusy = !value;
+                OnPropertyChanged();
+            }
+        }
+
         private String _name = "";
 
         public String Name

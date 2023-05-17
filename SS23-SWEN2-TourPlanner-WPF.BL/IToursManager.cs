@@ -10,7 +10,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
     public interface IToursManager
     {
         void EditTour(Tour t);
-        Task AddTour(Tour t);
+        Task<Tour> AddTour(Tour t);
 
         void AddTourLog(Tour tour, TourLog tourLog);
         void DeleteTour(Tour tour);
