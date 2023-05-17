@@ -27,18 +27,30 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             set {
                 // load tour from toursmanager
                 _currentTour = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TourSelected));
+
                 if (_currentTour == null)
                     return;
+                
 
                 TourLogsVM = new TourLogsViewModel(toursmanager, _currentTour);
  
-                OnPropertyChanged();
                 OnPropertyChanged(nameof(TourLogsVM));
-                OnPropertyChanged(nameof(TourSelected));
             } 
         }
 
         private Tour? _currentTour;
+
+        private bool _isBusy;
+        public bool IsBusy { 
+            get => _isBusy;
+            set
+            {
+                if (_isBusy == value) return;
+                _isBusy = value;
+            }
+        }
 
         public Boolean TourSelected
         {
@@ -54,12 +66,14 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     if (App.Current.Services.GetService(typeof(AddTourViewModel)) is AddTourViewModel addTourViewModel)
                     {
                         var addTourDialog = new AddTourDialog(addTourViewModel);
+                        
                         addTourDialog.Show();
 
                         // listen for addTour Events
-                        addTourViewModel.AddButtonClicked += (_, tour) =>
+                        addTourViewModel.AddButtonClicked += async (_, tour) =>
                         {
-                            toursManager.AddTour(tour);
+                            addTourViewModel.IsEnabled = false;
+                            tour = await toursManager.AddTour(tour);
                             Tours.Add(tour);
                             addTourDialog?.Close();
                         };
@@ -70,9 +84,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             {
                 if (TourSelected)
                 {
-                    toursManager.DeleteTour(CurrentTour);
-                    Tours.Remove(Tours.Where(i => i.Id == CurrentTour.Id).Single());
+                    var temp = CurrentTour;
                     CurrentTour = null;
+                    toursManager.DeleteTour(temp);
+                    Tours.Remove(Tours.Where(i => i.Id == temp.Id).Single());
                 }
             });
 

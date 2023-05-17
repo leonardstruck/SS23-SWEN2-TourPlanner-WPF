@@ -37,7 +37,8 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Route">
-                <Grid Background="#FFFF0000"/>
+                <Image x:Name="imgeControl" Source="{Binding Path=CurrentTour.ImageSource}"/>
+
             </TabItem>
             <TabItem Header="Misc">
 

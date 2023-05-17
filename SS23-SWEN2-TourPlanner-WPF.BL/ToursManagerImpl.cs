@@ -1,7 +1,9 @@
-﻿using SS23_SWEN2_TourPlanner_WPF.DAL;
+﻿using SS23_SWEN2_TourPlanner.DAL;
+using SS23_SWEN2_TourPlanner_WPF.DAL;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +16,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
         public ToursManagerImpl(IDataManager dataManager) {  _dataManager = dataManager; }
 
-        public void AddTour(Tour t)
+        public async Task<Tour> AddTour(Tour t)
         {
-            _dataManager.AddTour(t);
+            var map = new Map(t);
+            t.Image = await map.CreateMap();
+            _dataManager.AddTourAsync(t);
+            return t;
         }
 
         public void EditTour(Tour t)
@@ -36,6 +41,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
         public void DeleteTour(Tour tour)
         {
+            // delete images
+            if (File.Exists(tour.Image))
+            {
+                File.Delete(tour.Image);
+            }
             _dataManager.DeleteTour(tour);
         }
 

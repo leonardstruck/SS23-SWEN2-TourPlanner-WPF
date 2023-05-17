@@ -9,7 +9,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
 {
     public interface IDataManager
     {
-        void AddTour(Tour t);
+        void AddTourAsync(Tour t);
 
         void EditTour(Tour t);
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace SS23_SWEN2_TourPlanner_WPF.Models
 {
@@ -38,6 +39,26 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
             this.Time = 0;
             this.Image = string.Empty;
      
+        }
+
+        public BitmapImage ImageSource { get
+            {
+                if(Image == null || Image == "")
+                {
+                    return new BitmapImage();
+                }
+                if(File.Exists(Image))
+                {
+                    var bi = new BitmapImage();
+                    bi.BeginInit();
+                    bi.CacheOption = BitmapCacheOption.OnLoad;
+                    bi.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                    bi.UriSource = new Uri(Image);
+                    bi.EndInit();
+                    return bi;
+                }
+                return new BitmapImage();
+            } 
         }
     }
 }
