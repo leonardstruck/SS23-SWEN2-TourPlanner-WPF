@@ -67,7 +67,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                 }
             );
             this.DeleteTourCommand = new RelayCommand(_ => {
-                if (CurrentTour != null)
+                if (TourSelected)
                 {
                     toursManager.DeleteTour(CurrentTour);
                     Tours.Remove(Tours.Where(i => i.Id == CurrentTour.Id).Single());
