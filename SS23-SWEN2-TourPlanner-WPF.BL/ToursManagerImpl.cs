@@ -19,6 +19,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             _dataManager.AddTour(t);
         }
 
+        public void EditTour(Tour t)
+        {
+            _dataManager.EditTour(t);
+        }
+
         public IEnumerable<Tour> GetTours()
         {
             return _dataManager.GetTours();

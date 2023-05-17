@@ -51,6 +51,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
             _context.SaveChanges();
         }
 
+        public void EditTour(Tour t)
+        {
+            _context.Tours.Update(t);
+            _context.SaveChanges();
+        }
+
         public void AddTourLog(Tour tour, TourLog tourLog)
         {
             var tourFromDB = _context.Tours.Include(t => t.TourLogs).Single(t => t.Id == tour.Id);
