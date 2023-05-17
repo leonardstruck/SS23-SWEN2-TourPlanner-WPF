@@ -48,7 +48,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         public ToursViewModel(IToursManager toursManager)
         {
             this.toursmanager = toursManager;
-            toursManager.GetTours().ToList().ForEach(t =>  Tours.Add(t));
+            toursManager.GetTours().ToList().ForEach(t => Tours.Add(t));
             this.CreateTourCommand = new RelayCommand(param =>
                 {
                     if (App.Current.Services.GetService(typeof(AddTourViewModel)) is AddTourViewModel addTourViewModel)
@@ -66,13 +66,16 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     }
                 }
             );
-            this.DeleteTourCommand = new RelayCommand(_ => {
+            this.DeleteTourCommand = new RelayCommand(_ =>
+            {
                 if (TourSelected)
                 {
                     toursManager.DeleteTour(CurrentTour);
                     Tours.Remove(Tours.Where(i => i.Id == CurrentTour.Id).Single());
                     CurrentTour = null;
                 }
+            });
+
             this.EditTourCommand = new RelayCommand(param =>
             {
                 if (CurrentTour == null)
@@ -89,7 +92,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 
                     // Replace tour in Tour List with the changed tour
                     // find tour that has the same Id
-                    var tourInList = Tours.Single(t =>  t.Id == tour.Id);
+                    var tourInList = Tours.Single(t => t.Id == tour.Id);
                     if (tourInList == null)
                         return;
 
@@ -101,8 +104,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     }
 
                     CurrentTour = tour;
-                    
-                    
+
+
                     editTourDialog?.Close();
                 };
             });
