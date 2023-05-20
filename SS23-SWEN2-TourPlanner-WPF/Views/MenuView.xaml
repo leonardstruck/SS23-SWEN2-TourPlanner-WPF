@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+             xmlns:viewmodels="clr-namespace:SS23_SWEN2_TourPlanner_WPF.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:ToursViewModel}"
              d:DesignHeight="20" d:DesignWidth="800">
     <Menu DockPanel.Dock="Top">
         <Menu.ItemsPanel>
@@ -13,7 +15,7 @@
         </Menu.ItemsPanel>
         <MenuItem Header="_File">
             <MenuItem Header="_Import" />
-            <MenuItem Header="_Export" />
+            <MenuItem Header="_Export" Command="{Binding Path=ExportReportCommand}"/>
         </MenuItem>
         <MenuItem Header="_Help" HorizontalAlignment="Right" >
 
