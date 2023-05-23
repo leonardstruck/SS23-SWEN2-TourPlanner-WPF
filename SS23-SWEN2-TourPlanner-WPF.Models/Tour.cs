@@ -24,7 +24,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
         public string To { get; set; }
         public TourTransportType TransportType { get; set; }
         public double Distance { get; set; }
-        public double Time { get; set; }
+        public TimeSpan Time { get; set; }
         public string Image { get; set; } // path to image
         public List<TourLog> TourLogs { get; } = new();
 
@@ -36,7 +36,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
             this.To = string.Empty;
             this.TransportType = TourTransportType.Walking;
             this.Distance = 0;
-            this.Time = 0;
+            this.Time = new TimeSpan(0);
             this.Image = string.Empty;
      
         }

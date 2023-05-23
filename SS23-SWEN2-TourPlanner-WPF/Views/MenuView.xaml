@@ -15,7 +15,8 @@
         </Menu.ItemsPanel>
         <MenuItem Header="_File">
             <MenuItem Header="_Import" />
-            <MenuItem Header="_Export" Command="{Binding Path=ExportReportCommand}"/>
+            <MenuItem Header="_Export"/>
+            <MenuItem Header="_Generate Report" Command="{Binding Path=ExportReportCommand}"/>
         </MenuItem>
         <MenuItem Header="_Help" HorizontalAlignment="Right" >
 

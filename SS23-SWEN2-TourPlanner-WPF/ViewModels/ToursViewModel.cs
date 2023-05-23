@@ -74,8 +74,15 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                         addTourViewModel.AddButtonClicked += async (_, tour) =>
                         {
                             addTourViewModel.IsEnabled = false;
-                            tour = await toursManager.AddTour(tour);
-                            Tours.Add(tour);
+                            try
+                            {
+                                tour = await toursManager.AddTour(tour);
+                                Tours.Add(tour);
+                            }
+                            catch
+                            {
+
+                            }
                             addTourDialog?.Close();
                         };
                     }

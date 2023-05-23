@@ -7,6 +7,7 @@ using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows;
 using System.Windows.Input;
 //using System.Windows.Documents;
 
@@ -50,8 +51,17 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                             .SetFontColor(iText.Kernel.Colors.ColorConstants.DARK_GRAY)
                         );
                     // details
+                    // string fmt = "%d' days 'hh' hours 'mm' minutes'";
+                    string fmt;
+                    
+                    if (tour.Time.Days > 0)
+                        fmt = "%d' days 'h' hours 'm' minutes'";
+                    else
+                        fmt = "h' hours 'm' minutes'";
+                    
+
                     document.Add(
-                        new Paragraph($"{tour.From} - {tour.To}, {tour.Distance}km {Math.Floor(tour.Time)}:{(tour.Time % 1) * 60}")
+                        new Paragraph($"{tour.From} - {tour.To}, {Math.Round(tour.Distance, 2)}km \n{tour.Time.ToString(fmt)}")
                             .SetFontSize(18)
                             .SetFontColor(iText.Kernel.Colors.ColorConstants.LIGHT_GRAY)
                         );
@@ -91,9 +101,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                     {
                         document.Add(
                             new Image(iText.IO.Image.ImageDataFactory.Create(tour.Image))
-                                .SetWidth(300)
+                                .SetWidth(400)
                                 .SetHeight(300)
-                                .SetTextAlignment(TextAlignment.CENTER)
                                 .SetMarginTop(20)
                             );
                     }
