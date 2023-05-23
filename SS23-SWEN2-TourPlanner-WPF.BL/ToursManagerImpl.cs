@@ -1,5 +1,6 @@
 ﻿using SS23_SWEN2_TourPlanner.DAL;
 using SS23_SWEN2_TourPlanner_WPF.DAL;
+using SS23_SWEN2_TourPlanner_WPF.Log4Net;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,18 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 {
     public class ToursManagerImpl : IToursManager
     {
+        private static ILoggerWrapper logger = LoggerFactory.GetLogger();
         private readonly IDataManager _dataManager;
 
         public ToursManagerImpl(IDataManager dataManager) {  _dataManager = dataManager; }
 
         public async Task<Tour> AddTour(Tour t)
         {
+            logger.Debug($"Adding Tour: {t.Name}");
+            logger.Debug($"Requesting Map for {t.Name} from {t.From} to {t.To}");
             var map = new Map(t);
             t.Image = await map.CreateMap();
+            logger.Debug($"Storing Tour {t.Name}");
             _dataManager.AddTourAsync(t);
             return t;
         }
