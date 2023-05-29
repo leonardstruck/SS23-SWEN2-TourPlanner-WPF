@@ -20,6 +20,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         public RelayCommand AddTourLogCommand { get; set; }
         public RelayCommand DeleteTourLogCommand { get; }
 
+        public RelayCommand EditTourLogCommand { get; }
+
         public TourLog? CurrentTourLog
         {
             get { return _currentTourLog; }
@@ -67,6 +69,37 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     TourLogs.Remove(TourLogs.Where(i => i.Id == CurrentTourLog.Id).Single());
                     CurrentTourLog = null;
                 }
+            });
+            EditTourLogCommand = new RelayCommand(_ =>
+            {
+                if (CurrentTourLog == null)
+                    return;
+
+                var editTourLogVM = new EditTourLogViewModel(CurrentTourLog);
+
+                var editTourLogDialog = new EditTourLogDialog(editTourLogVM);
+                editTourLogDialog.Show();
+
+                editTourLogVM.EditButtonClicked += (_, tourLog) => { 
+                    toursManager.EditTourLog(tourLog);
+
+                    // Replace tourLog in List with the changed tour
+                    // find tourlog that has the same Id
+                    var tourLogInList = TourLogs.Single(t => t.Id == tourLog.Id);
+                    if (tourLogInList == null)
+                        return;
+
+                    int index = TourLogs.IndexOf(tourLogInList);
+                    if (index != -1)
+                    {
+                        TourLogs.RemoveAt(index);
+                        TourLogs.Insert(index, tourLog);
+                    }
+
+                    CurrentTourLog = tourLog;
+
+                    editTourLogDialog?.Close();
+                };
             });
         }
     }
