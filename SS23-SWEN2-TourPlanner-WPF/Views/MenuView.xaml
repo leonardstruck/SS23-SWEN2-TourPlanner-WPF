@@ -17,6 +17,7 @@
             <MenuItem Header="_Import" />
             <MenuItem Header="_Export"/>
             <MenuItem Header="_Generate Report" Command="{Binding Path=ExportReportCommand}"/>
+            <MenuItem Header="_Generate Single Report" Command="{Binding Path=ExportSingleReportCommand}"/>
         </MenuItem>
         <MenuItem Header="_Help" HorizontalAlignment="Right" >
 
