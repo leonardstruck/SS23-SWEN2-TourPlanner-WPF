@@ -23,6 +23,22 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
         public string From { get; set; }
         public string To { get; set; }
         public TourTransportType TransportType { get; set; }
+        public double Rating { get {
+                if(TourLogs.Count > 0)
+                {
+                    var sum = 0;
+                    foreach(var log in TourLogs)
+                    {
+                        sum += log.Rating;
+                    }
+                    return Math.Round((double)sum / (double)TourLogs.Count, 2);
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
         public double Distance { get; set; }
         public TimeSpan Time { get; set; }
         public string Image { get; set; } // path to image
