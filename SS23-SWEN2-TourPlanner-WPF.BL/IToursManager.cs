@@ -18,5 +18,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         void DeleteTour(Tour tour);
         void DeleteTourLog(Tour tour, TourLog currentTourLog);
         IEnumerable<Tour> GetTours();
+        IEnumerable<TourLog> GetTourLogs();
     }
 }
