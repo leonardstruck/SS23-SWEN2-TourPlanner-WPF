@@ -21,6 +21,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         public RelayCommand CreateTourCommand { get; }
         public RelayCommand DeleteTourCommand { get; }
         public RelayCommand EditTourCommand { get; }
+        public RelayCommand ExportReportCommand { get; }
+        public RelayCommand ExportSingleReportCommand { get; }
 
         public Tour? CurrentTour { 
             get { return _currentTour; } 
@@ -73,8 +75,15 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                         addTourViewModel.AddButtonClicked += async (_, tour) =>
                         {
                             addTourViewModel.IsEnabled = false;
-                            tour = await toursManager.AddTour(tour);
-                            Tours.Add(tour);
+                            try
+                            {
+                                tour = await toursManager.AddTour(tour);
+                                Tours.Add(tour);
+                            }
+                            catch
+                            {
+
+                            }
                             addTourDialog?.Close();
                         };
                     }
@@ -123,6 +132,19 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 
                     editTourDialog?.Close();
                 };
+            });
+            this.ExportReportCommand = new RelayCommand(_ =>
+            {
+                Report report = new Report();
+                report.CreateReport(Tours);
+            });
+            this.ExportSingleReportCommand = new RelayCommand(_ =>
+            {
+                if (CurrentTour == null)
+                    return;
+
+                Report report = new Report();
+                report.CreateReport(CurrentTour);
             });
         }
     }

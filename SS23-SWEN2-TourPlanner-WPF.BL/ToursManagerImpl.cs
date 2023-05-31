@@ -23,9 +23,13 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             logger.Debug($"Adding Tour: {t.Name}");
             logger.Debug($"Requesting Map for {t.Name} from {t.From} to {t.To}");
             var map = new Map(t);
-            t.Image = await map.CreateMap();
             logger.Debug($"Storing Tour {t.Name}");
+            Tour temp = await map.CreateMap(); // null wenn von der API nichts zurück kommt
+            t.Image = temp.Image;
+            t.Distance = temp.Distance;
+            t.Time = temp.Time;
             _dataManager.AddTourAsync(t);
+
             return t;
         }
 
