@@ -72,5 +72,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         {
             _dataManager.EditTourLog(currentTourLog);
         }
+
+        public IEnumerable<TourLog> GetTourLogs()
+        {
+            return _dataManager.GetTourLogs();
+        }
     }
 }

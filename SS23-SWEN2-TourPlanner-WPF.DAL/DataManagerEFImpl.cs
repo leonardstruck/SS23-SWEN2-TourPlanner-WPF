@@ -89,6 +89,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
             return _context.Tours;
         }
 
+        public IEnumerable<TourLog> GetTourLogs()
+        {
+            _context.TourLogs.Load();
+            return _context.TourLogs;
+        }
+
         public void EditTourLog(TourLog tourLog)
         {
             _context.TourLogs.Update(tourLog);

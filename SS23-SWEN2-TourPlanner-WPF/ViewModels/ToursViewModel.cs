@@ -63,6 +63,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         {
             this.toursmanager = toursManager;
             toursManager.GetTours().ToList().ForEach(t => Tours.Add(t));
+            toursManager.GetTourLogs();
             this.CreateTourCommand = new RelayCommand(param =>
                 {
                     if (App.Current.Services.GetService(typeof(AddTourViewModel)) is AddTourViewModel addTourViewModel)
