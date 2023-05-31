@@ -3,6 +3,7 @@ using SS23_SWEN2_TourPlanner.DAL;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
         {
             _context = new TourDbContext();
 
-            bool recreate = false;
+            bool recreate = bool.Parse(ConfigurationManager.AppSettings["ResetDatabase"]);
             if (recreate)
                 _context.Database.EnsureDeleted();
 

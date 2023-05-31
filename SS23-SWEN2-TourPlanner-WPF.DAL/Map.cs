@@ -5,6 +5,7 @@ using System;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.Configuration;
 
 namespace SS23_SWEN2_TourPlanner.DAL;
 
@@ -12,7 +13,7 @@ public class Map
 {
     private Tour tour;
     //ToDo load from config
-    private string key = "gaOGsXknfsoJ4v5IdQTUwyrv8qtCqPIT";
+    private string key = ConfigurationManager.ConnectionStrings["MapQuestApiKey"].ConnectionString;
 
     public Map(Tour tour)
     {
