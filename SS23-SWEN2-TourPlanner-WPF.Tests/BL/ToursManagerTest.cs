@@ -5,6 +5,7 @@ using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,7 +40,5 @@ namespace SS23_SWEN2_TourPlanner_WPF.Tests.BL
             _dataManager.Verify(m => m.DeleteTour(tour), Times.Once);
             Assert.That(File.Exists(tour.Image), Is.False);
         }
-
-
     }
 }
