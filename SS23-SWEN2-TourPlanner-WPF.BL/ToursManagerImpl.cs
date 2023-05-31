@@ -19,8 +19,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         public async Task<Tour> AddTour(Tour t)
         {
             var map = new Map(t);
-            t.Image = await map.CreateMap();
+            Tour temp = await map.CreateMap(); // null wenn von der API nichts zurück kommt
+            t.Image = temp.Image;
+            t.Distance = temp.Distance;
+            t.Time = temp.Time;
             _dataManager.AddTourAsync(t);
+
             return t;
         }
 
