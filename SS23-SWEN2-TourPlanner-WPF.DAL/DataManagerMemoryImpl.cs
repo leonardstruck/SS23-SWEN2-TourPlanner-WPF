@@ -57,6 +57,21 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
             tours.Insert(index, t);
         }
 
+        public void EditTourLog(TourLog tourLog)
+        {
+            foreach (var tourLogList in tourLogs.Values)
+            {
+                foreach (var logToUpdate in tourLogList.Where(log => log.Id == tourLog.Id))
+                {
+                    logToUpdate.DateTime = tourLog.DateTime;
+                    logToUpdate.TotalTime = tourLog.TotalTime;
+                    logToUpdate.Rating = tourLog.Rating;
+                    logToUpdate.Difficulty = tourLog.Difficulty;
+                    logToUpdate.Comment = tourLog.Comment;
+                }
+            }
+        }
+
         public IEnumerable<Tour> GetTours()
         {
             return tours;
