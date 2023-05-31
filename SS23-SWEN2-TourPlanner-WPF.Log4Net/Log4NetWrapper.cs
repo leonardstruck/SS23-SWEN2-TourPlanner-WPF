@@ -14,7 +14,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Log4Net
     {
         private log4net.ILog logger;
 
-        public static Log4NetWrapper CreateLogger(string configPath)
+        public static Log4NetWrapper CreateLogger(string configPath, string name)
         {
             if (!File.Exists(configPath))
             {
@@ -22,7 +22,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Log4Net
             }
 
             log4net.Config.XmlConfigurator.Configure(new FileInfo(configPath));
-            var logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            var logger = log4net.LogManager.GetLogger(name);
             return new Log4NetWrapper(logger);
         }
 

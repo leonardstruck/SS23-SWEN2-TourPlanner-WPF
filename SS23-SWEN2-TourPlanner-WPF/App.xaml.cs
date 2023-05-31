@@ -5,9 +5,13 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using log4net;
+using log4net.Repository.Hierarchy;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SS23_SWEN2_TourPlanner_WPF.BL;
 using SS23_SWEN2_TourPlanner_WPF.DAL;
+using SS23_SWEN2_TourPlanner_WPF.Log4Net;
 using SS23_SWEN2_TourPlanner_WPF.ViewModels;
 
 namespace SS23_SWEN2_TourPlanner_WPF
