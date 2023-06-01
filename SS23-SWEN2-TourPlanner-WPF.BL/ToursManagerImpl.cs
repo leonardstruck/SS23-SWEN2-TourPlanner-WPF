@@ -77,13 +77,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         {
             _dataManager.EditTourLog(currentTourLog);
         }
-
+        
         public void ExportData(ObservableCollection<Tour> tours)
         {
             var io = new IoData();
             io.ExportData(tours);
         }
-
 
         public IEnumerable<Tour> ImportData()
         {
