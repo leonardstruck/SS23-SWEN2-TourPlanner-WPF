@@ -39,6 +39,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
             this.Distance = 0;
             this.Time = new TimeSpan(0);
             this.Image = string.Empty;
+            this.TourLogs = new List<TourLog>();
      
         }
 
