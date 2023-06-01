@@ -29,7 +29,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             set {
                 // load tour from toursmanager
                 _currentTour = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(CurrentTour));
                 OnPropertyChanged(nameof(TourSelected));
 
                 if (_currentTour == null)
@@ -73,20 +73,14 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                         addTourDialog.Show();
 
                         // listen for addTour Events
-                        addTourViewModel.AddButtonClicked += async (_, tour) =>
+                        addTourViewModel.AddButtonClicked += (_, tour) =>
                         {
                             addTourViewModel.IsEnabled = false;
-                            try
-                            {
-                                tour = await toursManager.AddTour(tour);
-                                Tours.Add(tour);
-                            }
-                            catch
-                            {
-
-                            }
+                            var task = Task.Run(() => toursManager.AddTour(tour));    
                             addTourDialog?.Close();
                         };
+
+                       
                     }
                 }
             );
@@ -147,6 +141,47 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                 Report report = new Report();
                 report.CreateReport(CurrentTour);
             });
+
+            // add tour if tourmanager emits event
+            toursManager.TourAdded += (_, tour) =>
+            {
+                // Make UI Changes in UI Thread (avoid exception)
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Tours.Add(tour);
+                });
+            };
+
+            // update tour if tourmanager emits event
+            toursManager.TourChanged += (_, tour) =>
+            {
+                // Make UI Changes in UI Thread (avoid exception)
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (tour != null)
+                    {
+                        tour = tour as Tour;
+
+                        // Replace tour in Tour List with the changed tour
+                        // find tour that has the same Id
+                        var tourInList = Tours.Single(t => t.Id == tour.Id);
+                        if (tourInList == null)
+                            return;
+
+                        int index = Tours.IndexOf(tourInList);
+                        if (index != -1)
+                        {
+                            var isSelected = CurrentTour?.Id == tourInList.Id;
+                            Tours[index] = tour;
+
+                            if(isSelected)
+                                CurrentTour = Tours[index];
+                        }
+
+                    }
+                });
+                
+            };
         }
     }
 }
