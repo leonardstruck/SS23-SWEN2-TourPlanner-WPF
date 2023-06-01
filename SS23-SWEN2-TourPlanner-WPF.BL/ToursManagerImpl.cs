@@ -72,5 +72,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         {
             _dataManager.EditTourLog(currentTourLog);
         }
+
+        public void ExportData()
+        {
+            var io = new IoData();
+            io.ExportData();
+        }
     }
 }

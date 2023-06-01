@@ -25,8 +25,9 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
         public TourTransportType TransportType { get; set; }
         public double Distance { get; set; }
         public TimeSpan Time { get; set; }
-        public string Image { get; set; } // path to image
         public List<TourLog> TourLogs { get; } = new();
+        public string Image { get; set; } // path to image
+
 
         public Tour(string Name)
         {

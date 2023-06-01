@@ -1,4 +1,5 @@
-﻿using SS23_SWEN2_TourPlanner_WPF.BL;
+﻿using SS23_SWEN2_TourPlanner_WPF;
+using SS23_SWEN2_TourPlanner_WPF.BL;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using SS23_SWEN2_TourPlanner_WPF.Windows;
 using System;
@@ -23,6 +24,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         public RelayCommand EditTourCommand { get; }
         public RelayCommand ExportReportCommand { get; }
         public RelayCommand ExportSingleReportCommand { get; }
+        public RelayCommand ExportDataCommand { get; }
 
         public Tour? CurrentTour { 
             get { return _currentTour; } 
@@ -145,6 +147,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 
                 Report report = new Report();
                 report.CreateReport(CurrentTour);
+            });
+            this.ExportDataCommand = new RelayCommand(_ =>
+            {
+                toursManager.ExportData();
             });
         }
     }
