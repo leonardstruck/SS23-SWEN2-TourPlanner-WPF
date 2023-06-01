@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MapQuest
+namespace MapQuest.DirectionsAPI
 {
-    public partial class DirectionsAPI
+    public partial class Directions
     {
         internal static void HandleGeneralStatusCode(int statusCode)
         {
