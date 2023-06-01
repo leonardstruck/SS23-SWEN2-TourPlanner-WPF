@@ -16,6 +16,8 @@ using System.Globalization;
 using System.Windows.Navigation;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Media.Imaging;
 
 namespace SS23_SWEN2_TourPlanner_WPF.BL
 {
@@ -108,12 +110,42 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                             string value = data[j];
                             if (property.PropertyType == typeof(double))
                             {
+                                
                                 property.SetValue(tour, double.Parse(value, CultureInfo.InvariantCulture));
+                            }
+                            else if(property.PropertyType == typeof(List<TourLog>))
+                            {
+                                // Deserialize the list from the comma-separated string
+                                string[] listData = value.Split(new string[] { "&&&" }, StringSplitOptions.None);
+                                List<TourLog> logs = new List<TourLog>();
+                                PropertyInfo[] logProperties = typeof(TourLog).GetProperties();
+                                foreach (string item in listData)
+                                {
+                                    // item ist der String mit allen werten von einem log
+                                    
+                                    string[] logData = item.Split(new string[] { "%%%" }, StringSplitOptions.None);
+                                    TourLog tl = new TourLog();
+                                    for(int k= 0; k<logData.Length-1; k++)
+                                    {
+                                        PropertyInfo logProperty = logProperties[k];
+                                        var converter = TypeDescriptor.GetConverter(logProperty.PropertyType);
+                                        var convertedObject = converter.ConvertFromString(logData[k]);
+                                        logProperty.SetValue(tl, convertedObject);
+                                    }
+                                    tour.TourLogs.Add(tl);
+                                }
+                                //property.SetValue(tour, logs);
+                            }
+                            else if(property.PropertyType == typeof(BitmapImage))
+                            {
+                                continue;
                             }
                             else
                             {
                                 // value muss noch richtig geparst werden
-                                property.SetValue(tour, value);
+                                var converter = TypeDescriptor.GetConverter(property.PropertyType);
+                                var convertedObject = converter.ConvertFromString(value);
+                                property.SetValue(tour, convertedObject);
                             }
                         }
                         tours.Add(tour);
