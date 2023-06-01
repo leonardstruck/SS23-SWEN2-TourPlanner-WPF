@@ -4,6 +4,7 @@ using SS23_SWEN2_TourPlanner_WPF.Log4Net;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         private static readonly ILoggerWrapper logger = LoggerFactory.GetLogger(typeof(ToursManagerImpl).ToString());
         private readonly IDataManager _dataManager;
 
-        public ToursManagerImpl(IDataManager dataManager) {  _dataManager = dataManager; }
+        public ToursManagerImpl(IDataManager dataManager) { _dataManager = dataManager; }
 
         public async Task<Tour> AddTour(Tour t)
         {
@@ -42,6 +43,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         public IEnumerable<Tour> GetTours()
         {
             return _dataManager.GetTours();
+        }
+        public IEnumerable<TourLog> GetTourLogs()
+        {
+            return _dataManager.GetTourLogs();
         }
 
         public void AddTourLog(Tour tour, TourLog tourLog)
@@ -73,14 +78,17 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             _dataManager.EditTourLog(currentTourLog);
         }
 
-        public void ExportData()
+        public void ExportData(ObservableCollection<Tour> tours)
         {
             var io = new IoData();
-            io.ExportData();
+            io.ExportData(tours);
         }
-        public IEnumerable<TourLog> GetTourLogs()
+
+
+        public IEnumerable<Tour> ImportData()
         {
-            return _dataManager.GetTourLogs();
+            var io = new IoData();
+            return io.ImportData();
         }
     }
 }

@@ -21,5 +21,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
         public Difficulty Difficulty { get; set; }
         public TimeSpan TotalTime { get; set; }
         public int Rating { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Id}%%%{DateTime}%%%{Comment}%%%{Difficulty}%%%{TotalTime}%%%{Rating}";
     }
+    }
+
+    
 }

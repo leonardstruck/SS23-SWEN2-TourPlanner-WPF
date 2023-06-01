@@ -1,6 +1,7 @@
 ﻿using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         void DeleteTour(Tour tour);
         void DeleteTourLog(Tour tour, TourLog currentTourLog);
         IEnumerable<Tour> GetTours();
-        void ExportData();
         IEnumerable<TourLog> GetTourLogs();
+        IEnumerable<Tour> ImportData();
+        void ExportData(ObservableCollection<Tour> tours);
     }
 }

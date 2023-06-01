@@ -13,12 +13,15 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.IO;
 using System.Globalization;
+using System.Windows.Navigation;
+using System.Collections;
+using System.Collections.ObjectModel;
 
 namespace SS23_SWEN2_TourPlanner_WPF.BL
 {
     internal class IoData
     {
-        public void ExportData()
+        public void ExportData(ObservableCollection<Tour> tours)
         {
             
             // Show save file dialog
@@ -30,14 +33,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                 {
                     string filePath = saveFileDialog.FileName;
 
-                    // get data from database
+                    // Get data from db
                     IDataManager dataManager = new DataManagerEFImpl();
-                    List<Tour> tours = dataManager.GetTours().ToList();
 
-                    // Get the properties of the object type T
                     PropertyInfo[] properties = typeof(Tour).GetProperties();
-
-                    // Create a StringBuilder to store the CSV data
                     StringBuilder csvData = new StringBuilder();
 
                     // Append the header row
@@ -51,7 +50,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                         csvData.AppendLine(dataRow);
                     }
 
-                    // Write the CSV data to the file
                     File.WriteAllText(filePath, csvData.ToString());
 
 
@@ -71,7 +69,59 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
         public List<Tour> ImportData()
         {
-            // ToDo implement
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = "c:\\";
+            openFileDialog.Filter = "CSV Files (*.csv)|*.csv";
+            openFileDialog.FilterIndex = 2;
+            openFileDialog.RestoreDirectory = true;
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                //Get the path of specified file
+                string filePath = openFileDialog.FileName;
+                //Read the contents of the file into a stream
+                var fileStream = openFileDialog.OpenFile();
+
+                using (StreamReader reader = new StreamReader(fileStream))
+                {
+                    string[] lines = File.ReadAllLines(filePath);
+
+                    // [0] = header row
+                    // [1..n] = data rows
+                    if (lines.Length < 2)
+                        return new List<Tour>();
+
+                    // check if header row is valid
+                    PropertyInfo[] properties = typeof(Tour).GetProperties();
+                    string headerRow = string.Join(",", properties.Select(prop => prop.Name));
+                    if (lines[0] != headerRow)
+                        return new List<Tour>();
+
+                    List<Tour> tours = new List<Tour>();
+                    for (int i = 1; i < lines.Length; i++)
+                    {
+                        string[] data = lines[i].Split(',');
+                        Tour tour = new Tour("");
+                        for (int j = 0; j < data.Length; j++)
+                        {
+                            PropertyInfo property = properties[j];
+                            string value = data[j];
+                            if (property.PropertyType == typeof(double))
+                            {
+                                property.SetValue(tour, double.Parse(value, CultureInfo.InvariantCulture));
+                            }
+                            else
+                            {
+                                // value muss noch richtig geparst werden
+                                property.SetValue(tour, value);
+                            }
+                        }
+                        tours.Add(tour);
+                    }
+                    return tours;
+
+                }
+            }
 
             return new List<Tour>();
         }
@@ -81,6 +131,16 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             if (value is double doubleValue)
             {
                 return doubleValue.ToString(CultureInfo.InvariantCulture);
+            }
+            else if (value is IList listValue)
+            {
+                // Serialize the list into a comma-separated string
+                string serializedList = string.Empty;
+                foreach (object item in listValue)
+                {
+                    serializedList += item.ToString() + "&&&";
+                }
+                return serializedList;
             }
             else
             {

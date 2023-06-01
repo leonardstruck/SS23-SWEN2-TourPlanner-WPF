@@ -25,6 +25,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         public RelayCommand ExportReportCommand { get; }
         public RelayCommand ExportSingleReportCommand { get; }
         public RelayCommand ExportDataCommand { get; }
+        public RelayCommand ImportDataCommand { get; }
 
         public Tour? CurrentTour { 
             get { return _currentTour; } 
@@ -151,8 +152,16 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             });
             this.ExportDataCommand = new RelayCommand(_ =>
             {
-                toursManager.ExportData();
+                toursManager.ExportData(Tours);
+            });
+            this.ImportDataCommand = new RelayCommand(_ =>
+            {
+                foreach(Tour t in toursManager.ImportData())
+                {
+                    Tours.Add(t);
+                }
             });
         }
+
     }
 }
