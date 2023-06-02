@@ -40,6 +40,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                 if (tour.Description.ToLower().Contains(searchTerm)) return true;
                 if (tour.From.ToLower().Contains(searchTerm)) return true;
                 if (tour.To.ToLower().Contains(searchTerm)) return true;
+                if (tour.TransportType.ToString().ToLower().Contains(searchTerm)) return true;
 
                 return false;
             }).ToList();
