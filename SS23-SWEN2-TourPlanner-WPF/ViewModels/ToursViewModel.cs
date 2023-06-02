@@ -1,5 +1,6 @@
 ﻿using SS23_SWEN2_TourPlanner_WPF.BL;
 using SS23_SWEN2_TourPlanner_WPF.Models;
+using SS23_SWEN2_TourPlanner_WPF.Views;
 using SS23_SWEN2_TourPlanner_WPF.Windows;
 using System;
 using System.Collections.Generic;
@@ -86,17 +87,15 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             );
             this.DeleteTourCommand = new RelayCommand(_ =>
             {
-                if (TourSelected)
+                if (TourSelected && CurrentTour != null)
                 {
                     if (MessageBox.Show("Do you really want to delete this Tour?",
                     "Delete Tour",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
-                        var temp = CurrentTour;
-                        CurrentTour = null;
-                        toursManager.DeleteTour(temp);
-                        Tours.Remove(Tours.Where(i => i.Id == temp.Id).Single());
+                      toursManager.DeleteTour(CurrentTour);
+                      CurrentTour = null;
                     }
                 }
             });
@@ -148,6 +147,26 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                 report.CreateReport(CurrentTour);
             });
 
+            // handle errors from tourmanager
+            toursManager.TourError += (_, tourError) =>
+            {
+                switch (tourError.Exception)
+                {
+                    case MapQuest.DirectionsAPI.GetRouteException:
+                        toursManager.DeleteTour(tourError.Tour);
+                        MessageBox.Show($"Failed to generate route: {tourError.Exception?.InnerException?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        break;
+
+                    case MapQuest.StaticMapAPI.GetMapException:
+                        MessageBox.Show($"Failed to generate map: {tourError.Exception?.InnerException?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        break;
+
+                    default:
+                        MessageBox.Show($"An unhandled exception occurred: {tourError.Exception?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        break;
+                }
+            };
+            
             // add tour if tourmanager emits event
             toursManager.TourAdded += (_, tour) =>
             {
@@ -155,6 +174,15 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     Tours.Add(tour);
+                });
+            };
+
+            // remove tour if tourmanager emits event
+            toursManager.TourRemoved += (_, tour) =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Tours.Remove(Tours.Where(t => t.Id == tour.Id).Single());
                 });
             };
 
