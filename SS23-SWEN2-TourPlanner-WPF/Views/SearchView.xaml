@@ -3,14 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:SS23_SWEN2_TourPlanner_WPF.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:SearchViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-        <Grid Height="30">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="80" />
-            </Grid.ColumnDefinitions>
-            <TextBox VerticalContentAlignment="Center" />
-            <Button Content="Search" Grid.Column="1" />
-        </Grid>
+             d:DesignHeight="450" d:DesignWidth="800"
+             >
+    <Grid Height="30">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="80" />
+        </Grid.ColumnDefinitions>
+        <TextBox VerticalContentAlignment="Center" IsEnabled="{Binding Path=UIElementIsEnabled}" Text="{Binding SearchTerm}" />
+        <Button Content="Clear" Grid.Column="1" IsEnabled="{Binding Path=IsSearching}" Command="{Binding Path=SearchClearClick}" />
+        <Button Content="Search" Grid.Column="2" Command="{Binding Path=SearchButtonClick}"/>
+    </Grid>
 </UserControl>
