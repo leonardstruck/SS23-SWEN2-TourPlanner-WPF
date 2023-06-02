@@ -1,4 +1,4 @@
-﻿using SS23_SWEN2_TourPlanner_WPF.Models;
+using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +12,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
         private readonly List<Tour> tours = new();
         private readonly Dictionary<int, List<TourLog>> tourLogs = new();
 
+        private int _idCounter = 0;
+
         public Tour AddTour(Tour t)
         {
-            t.Id = tours.Count;
+            t.Id = ++_idCounter;
             tours.Add(t);
             return t;
         }
@@ -74,10 +76,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
             }
         }
 
-        public IEnumerable<Tour> GetTours()
-        {
-            return tours;
-        }
 
         public Tour? GetTour(int id)
         {
@@ -88,6 +86,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
         {
             // Combine tourLogs into a single list and return it
             return tourLogs.Values.SelectMany(x => x);
+        }
+
+        public IEnumerable<Tour> GetTours()
+        {
+            return tours;
         }
     }
 }
