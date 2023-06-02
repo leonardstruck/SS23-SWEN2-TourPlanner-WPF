@@ -12,11 +12,9 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
         private readonly List<Tour> tours = new();
         private readonly Dictionary<int, List<TourLog>> tourLogs = new();
 
-        public Tour AddTour(Tour t)
+        public void AddTourAsync(Tour t)
         {
-            t.Id = tours.Count;
             tours.Add(t);
-            return t;
         }
 
         public void AddTourLog(Tour tour, TourLog tourLog)
@@ -72,12 +70,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
                     logToUpdate.Comment = tourLog.Comment;
                 }
             }
-        }
-
-        public IEnumerable<TourLog> GetTourLogs()
-        {
-            // Combine tourLogs into a single list and return it
-            return tourLogs.Values.SelectMany(x => x);
         }
 
         public IEnumerable<Tour> GetTours()
