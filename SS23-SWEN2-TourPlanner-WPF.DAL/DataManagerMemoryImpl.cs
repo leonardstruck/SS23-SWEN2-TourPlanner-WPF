@@ -76,6 +76,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
             }
         }
 
+
+        public Tour? GetTour(int id)
+        {
+            return tours.FirstOrDefault(tour => tour.Id == id);
+        }
+
         public IEnumerable<TourLog> GetTourLogs()
         {
             // Combine tourLogs into a single list and return it
