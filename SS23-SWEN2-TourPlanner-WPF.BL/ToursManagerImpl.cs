@@ -21,6 +21,9 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
         public event EventHandler<Tour>? TourChanged;
         public event EventHandler<Tour>? TourAdded;
+        public event EventHandler<Tour>? TourRemoved;
+
+        public event EventHandler<TourError>? TourError;
 
         public ToursManagerImpl(IDataManager dataManager) {  
             _dataManager = dataManager; 
@@ -40,24 +43,41 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
         public async Task HandleAPICalls(Tour tour)
         {
-            var route = await mapQuestAPI.Directions.GetRoute(new Directions.GetRouteReq { From = tour.From, To = tour.To});
-      
-            tour.Distance = route.Distance;
-            tour.Time = route.Time;
+            try
+            {
+                var routeType = tour.TransportType switch
+                {
+                    TourTransportType.Auto => Directions.RouteType.Fastest,
+                    TourTransportType.Bicycle => Directions.RouteType.Bicycle,
+                    TourTransportType.Walking => Directions.RouteType.Pedestrian,
+                    _ => throw new Exception("Failed to determine RouteType"),
+                };
 
-            var map = await mapQuestAPI.StaticMap.GetMap(new MapQuest.StaticMapAPI.GetMapReq { BoundingBox = route.BoundingBox, Height = 600, Width = 800, SessionId = route.SessionId });
+                var route = await mapQuestAPI.Directions.GetRoute(new Directions.GetRouteReq { From = tour.From, To = tour.To, RouteType = routeType});
 
-            var path = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TourPlanner", "Maps");
-            // Ensure that directory for Maps is created
-            Directory.CreateDirectory(path);
+                tour.Distance = route.Distance;
+                tour.Time = route.Time;
 
-            tour.Image = Path.Join(path, $"{Guid.NewGuid()}.png");
+                var map = await mapQuestAPI.StaticMap.GetMap(new MapQuest.StaticMapAPI.GetMapReq { BoundingBox = route.BoundingBox, Height = 600, Width = 800, SessionId = route.SessionId });
 
-            // write map to disk
-            await map.WriteToFile(tour.Image);
+                var path = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TourPlanner", "Maps");
+                // Ensure that directory for Maps is created
+                Directory.CreateDirectory(path);
 
-            // update tour data
-            EditTour(tour);
+                tour.Image = Path.Join(path, $"{Guid.NewGuid()}.png");
+
+                // write map to disk
+                await map.WriteToFile(tour.Image);
+
+                // update tour data
+                EditTour(tour);
+            } catch (Exception ex)
+            {
+                this.TourError?.Invoke(this, new TourError() { Exception = ex, Tour = tour });;
+                return;
+            } 
+
+
         }
 
         public void EditTour(Tour t)
@@ -89,6 +109,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                 File.Delete(tour.Image);
             }
             _dataManager.DeleteTour(tour);
+            TourRemoved?.Invoke(this, tour);
         }
 
         public void DeleteTourLog(Tour tour, TourLog tourLog)
