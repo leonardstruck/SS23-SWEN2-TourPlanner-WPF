@@ -99,6 +99,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
             return _context.Tours;
         }
 
+        public Tour? GetTour(int id)
+        {
+            // AsNoTracking is required here, since we want to compare a Tour with the state of an actual Tour in the Database
+            return _context.Tours.AsNoTracking().FirstOrDefault(t => t.Id == id);
+        }
+
         public IEnumerable<TourLog> GetTourLogs()
         {
             _context.TourLogs.Load();

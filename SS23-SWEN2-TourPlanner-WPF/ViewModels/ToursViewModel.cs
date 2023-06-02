@@ -113,23 +113,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                 editTourVM.EditButtonClicked += (_, tour) =>
                 {
                     toursManager.EditTour(tour);
-
-                    // Replace tour in Tour List with the changed tour
-                    // find tour that has the same Id
-                    var tourInList = Tours.Single(t => t.Id == tour.Id);
-                    if (tourInList == null)
-                        return;
-
-                    int index = Tours.IndexOf(tourInList);
-                    if (index != -1)
-                    {
-                        Tours.RemoveAt(index);
-                        Tours.Insert(index, tour);
-                    }
-
-                    CurrentTour = tour;
-
-
                     editTourDialog?.Close();
                 };
             });
@@ -206,7 +189,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                         if (index != -1)
                         {
                             var isSelected = CurrentTour?.Id == tourInList.Id;
-                            Tours[index] = tour;
+                            Tours.RemoveAt(index);
+                            Tours.Insert(index, tour);
 
                             if(isSelected)
                                 CurrentTour = Tours[index];

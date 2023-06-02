@@ -80,8 +80,29 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
         }
 
+        public bool IsApiCallNecessary(Tour tour)
+        {
+            var storedTour = _dataManager.GetTour(tour.Id);
+            if (storedTour != null)
+            {
+                return
+                    tour.From != storedTour.From ||
+                    tour.To != storedTour.To ||
+                    tour.TransportType != storedTour.TransportType;
+            }
+            return true;
+        }
+
         public void EditTour(Tour t)
         {
+            if (IsApiCallNecessary(t))
+            {
+                // clear image
+                t.Image = string.Empty;
+
+                Task.Run(() => HandleAPICalls(t));
+            }
+
             logger.Debug($"Edit Tour: {t.Id}");
             _dataManager.EditTour(t);
 
