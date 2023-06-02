@@ -47,6 +47,10 @@ namespace MapQuest.DirectionsAPI
                     throw new Exception("No dataset found to calculate the route");
                 case 610:
                     throw new Exception("Ambiguities were found in one or more of the locations specified");
+                case 611:
+                    throw new Exception("At least two locations required");
+                case 612:
+                    throw new Exception("No routes available for location");
             }
         }
     }

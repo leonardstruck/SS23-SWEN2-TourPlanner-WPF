@@ -75,7 +75,7 @@ namespace MapQuest.DirectionsAPI
             } catch (Exception e)
             {
                 // Wrap Exception
-                throw new Exception($"Failed to get Route: {e}");
+                throw new GetRouteException($"Failed to generate route: {e.Message}", e);
             }
         }
 
@@ -108,5 +108,13 @@ namespace MapQuest.DirectionsAPI
             K,
             M
         }
+
+       
+    }
+    public class GetRouteException : Exception
+    {
+        public GetRouteException() { }
+        public GetRouteException(string message) : base(message) { }
+        public GetRouteException(string message, Exception innerException) : base(message, innerException) { }
     }
 }
