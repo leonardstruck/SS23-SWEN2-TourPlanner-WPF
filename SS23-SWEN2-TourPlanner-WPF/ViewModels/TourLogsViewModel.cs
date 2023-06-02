@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
@@ -65,9 +66,15 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             DeleteTourLogCommand = new RelayCommand(_ => {
                 if (CurrentTourLog != null)
                 {
-                    toursManager.DeleteTourLog(tour, CurrentTourLog);
-                    TourLogs.Remove(TourLogs.Where(i => i.Id == CurrentTourLog.Id).Single());
-                    CurrentTourLog = null;
+                    if (MessageBox.Show("Do you really want to delete this Tourlog?",
+                    "Delete Tourlog",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        toursManager.DeleteTourLog(tour, CurrentTourLog);
+                        TourLogs.Remove(TourLogs.Where(i => i.Id == CurrentTourLog.Id).Single());
+                        CurrentTourLog = null;
+                    }
                 }
             });
             EditTourLogCommand = new RelayCommand(_ =>

@@ -94,10 +94,16 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             {
                 if (TourSelected)
                 {
-                    var temp = CurrentTour;
-                    CurrentTour = null;
-                    toursManager.DeleteTour(temp);
-                    Tours.Remove(Tours.Where(i => i.Id == temp.Id).Single());
+                    if (MessageBox.Show("Do you really want to delete this Tour?",
+                    "Delete Tour",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        var temp = CurrentTour;
+                        CurrentTour = null;
+                        toursManager.DeleteTour(temp);
+                        Tours.Remove(Tours.Where(i => i.Id == temp.Id).Single());
+                    }
                 }
             });
 
