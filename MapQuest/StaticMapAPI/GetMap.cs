@@ -42,7 +42,7 @@ namespace MapQuest.StaticMapAPI
             } catch (Exception e)
             {
                 // Wrap Exception
-                throw new Exception($"Failed to get Map: {e}");
+                throw new GetMapException($"Failed to get Map: {e.Message}", e);
             }
         }
     }
@@ -53,5 +53,12 @@ namespace MapQuest.StaticMapAPI
         public string? SessionId;
         public int Width;
         public int Height;
+    }
+
+    public class GetMapException : Exception
+    {
+        public GetMapException() { }
+        public GetMapException(string message) : base(message) { }
+        public GetMapException(string message, Exception innerException) : base(message, innerException) { }
     }
 }
