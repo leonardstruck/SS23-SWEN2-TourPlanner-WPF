@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SS23_SWEN2_TourPlanner.DAL;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
