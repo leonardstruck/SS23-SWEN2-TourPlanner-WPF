@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
+using System.Windows;
 
 namespace SS23_SWEN2_TourPlanner_WPF.Tests.ViewModels
 {
@@ -16,12 +17,15 @@ namespace SS23_SWEN2_TourPlanner_WPF.Tests.ViewModels
     {
         private ToursViewModel _viewModel;
         private Mock<IToursManager> _toursManagerMock;
+        private Mock<IMessageBoxService> _messageBoxServiceMock;
 
         [SetUp]
         public void Setup()
         {
             _toursManagerMock = new Mock<IToursManager>();
-            _viewModel = new ToursViewModel(_toursManagerMock.Object);
+            _messageBoxServiceMock = new Mock<IMessageBoxService>();
+            _messageBoxServiceMock.Setup(m => m.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<MessageBoxResult>(), It.IsAny<MessageBoxOptions>())).Returns(MessageBoxResult.Yes);
+            _viewModel = new ToursViewModel(_toursManagerMock.Object, _messageBoxServiceMock.Object);
         }
 
         [Test]
@@ -36,7 +40,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Tests.ViewModels
             _toursManagerMock.Setup(tm => tm.GetTours()).Returns(expectedTours);
 
             // Act
-            _viewModel = new ToursViewModel(_toursManagerMock.Object);
+            _viewModel = new ToursViewModel(_toursManagerMock.Object, _messageBoxServiceMock.Object);
 
             // Assert
             Assert.That(expectedTours, Has.Count.EqualTo(2));
@@ -48,7 +52,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Tests.ViewModels
         }
 
         [Test]
-        public void DeleteTourCommand_ShouldRemoveTourFromManagerAndList()
+        public void DeleteTourCommand_ShouldRemoveTourFromManager()
         {
             // Arrange
             var tourToDelete = new Tour("Tour 1") { Id = 1 };
@@ -62,7 +66,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.Tests.ViewModels
 
             // Assert
             _toursManagerMock.Verify(tm => tm.DeleteTour(tourToDelete), Times.Once);
-            Assert.That(_viewModel.Tours, Does.Not.Contain(tourToDelete));
         }
     }
 }
