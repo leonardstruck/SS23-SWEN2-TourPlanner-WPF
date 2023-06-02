@@ -12,9 +12,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
         private readonly List<Tour> tours = new();
         private readonly Dictionary<int, List<TourLog>> tourLogs = new();
 
+        private int _idCounter = 0;
+
         public Tour AddTour(Tour t)
         {
-            t.Id = tours.Count;
+            t.Id = ++_idCounter;
             tours.Add(t);
             return t;
         }
