@@ -89,8 +89,14 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             {
                 if (TourSelected && CurrentTour != null)
                 {
-                    toursManager.DeleteTour(CurrentTour);
-                    CurrentTour = null;
+                    if (MessageBox.Show("Do you really want to delete this Tour?",
+                    "Delete Tour",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                      toursManager.DeleteTour(CurrentTour);
+                      CurrentTour = null;
+                    }
                 }
             });
 

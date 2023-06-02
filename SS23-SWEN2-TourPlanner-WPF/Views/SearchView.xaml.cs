@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SS23_SWEN2_TourPlanner_WPF.BL;
+using SS23_SWEN2_TourPlanner_WPF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.Views
         public SearchView()
         {
             InitializeComponent();
+            var toursVM = (ToursViewModel?)App.Current.Services.GetService(typeof(ToursViewModel));
+            var toursManager = (IToursManager?)App.Current.Services.GetService(typeof(IToursManager));
+            if(toursVM != null && toursManager != null)
+            {
+                this.DataContext = new SearchViewModel(toursVM, toursManager);
+            }
         }
     }
 }
