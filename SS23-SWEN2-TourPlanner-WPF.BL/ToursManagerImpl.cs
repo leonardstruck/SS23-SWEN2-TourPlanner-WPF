@@ -45,7 +45,15 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         {
             try
             {
-                var route = await mapQuestAPI.Directions.GetRoute(new Directions.GetRouteReq { From = tour.From, To = tour.To });
+                var routeType = tour.TransportType switch
+                {
+                    TourTransportType.Auto => Directions.RouteType.Fastest,
+                    TourTransportType.Bicycle => Directions.RouteType.Bicycle,
+                    TourTransportType.Walking => Directions.RouteType.Pedestrian,
+                    _ => throw new Exception("Failed to determine RouteType"),
+                };
+
+                var route = await mapQuestAPI.Directions.GetRoute(new Directions.GetRouteReq { From = tour.From, To = tour.To, RouteType = routeType});
 
                 tour.Distance = route.Distance;
                 tour.Time = route.Time;
