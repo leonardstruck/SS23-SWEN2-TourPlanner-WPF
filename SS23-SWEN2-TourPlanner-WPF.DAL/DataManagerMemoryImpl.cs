@@ -86,11 +86,5 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
         {
             return tours;
         }
-
-        public IEnumerable<TourLog> GetTourLogs()
-        {
-            // Combine tourLogs into a single list and return it
-            return tourLogs.Values.SelectMany(x => x);
-        }
     }
 }
