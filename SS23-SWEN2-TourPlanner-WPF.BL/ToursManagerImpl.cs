@@ -1,5 +1,4 @@
 ﻿using MapQuest;
-using SS23_SWEN2_TourPlanner.DAL;
 using SS23_SWEN2_TourPlanner_WPF.DAL;
 using SS23_SWEN2_TourPlanner_WPF.Log4Net;
 using SS23_SWEN2_TourPlanner_WPF.Models;
