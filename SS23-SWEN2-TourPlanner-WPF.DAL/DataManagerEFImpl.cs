@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SS23_SWEN2_TourPlanner_WPF.DAL
 {
@@ -16,35 +17,42 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
 
         public DataManagerEFImpl()
         {
-            _context = new TourDbContext();
-
-            bool recreate = bool.Parse(ConfigurationManager.AppSettings["ResetDatabase"]);
-            if (recreate)
-                _context.Database.EnsureDeleted();
-
-            _context.Database.EnsureCreated();
-
-            if (recreate)
+            try
             {
-                var Tour1 = new Tour("Tour 1")
-                {
-                    Description = "This is the description for Tour 1",
-                    From = "Corneliusgasse 4, 1060 Wien",
-                    To = "Kaunitzgasse 11, 1060 Wien",
-                };
-                Tour1.TourLogs.Add(new TourLog
-                {
-                    Comment = "This is a comment",
-                    DateTime = DateTime.Now,
-                    Difficulty = Difficulty.Easy,
-                    Rating = 5,
-                    TotalTime = TimeSpan.FromMinutes(5),
-                });
-                _context.Tours.Add(Tour1);
-                _context.Tours.Add(new Tour("Tour 2"));
-                _context.SaveChanges();
-            }
+                _context = new TourDbContext();
 
+                bool recreate = bool.Parse(ConfigurationManager.AppSettings["ResetDatabase"]);
+                if (recreate)
+                    _context.Database.EnsureDeleted();
+
+                _context.Database.EnsureCreated();
+
+                if (recreate)
+                {
+                    var Tour1 = new Tour("Tour 1")
+                    {
+                        Description = "This is the description for Tour 1",
+                        From = "Corneliusgasse 4, 1060 Wien",
+                        To = "Kaunitzgasse 11, 1060 Wien",
+                    };
+                    Tour1.TourLogs.Add(new TourLog
+                    {
+                        Comment = "This is a comment",
+                        DateTime = DateTime.Now,
+                        Difficulty = Difficulty.Easy,
+                        Rating = 5,
+                        TotalTime = TimeSpan.FromMinutes(5),
+                    });
+                    _context.Tours.Add(Tour1);
+                    _context.Tours.Add(new Tour("Tour 2"));
+                    _context.SaveChanges();
+                }
+            } catch (Exception e)
+            { 
+                MessageBox.Show($"Something went wrong: {e.Message}.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                // Quit Application
+                Environment.Exit(1);
+            }
         }
 
         public Tour AddTour(Tour t)
