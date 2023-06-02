@@ -47,11 +47,13 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
 
         }
 
-        public void AddTourAsync(Tour t)
+        public Tour AddTour(Tour t)
         {
             
-            _context.Tours.Add(t);
+            var tour = _context.Tours.Add(t);
             _context.SaveChanges();
+
+            return tour.Entity;
         }
 
         public void EditTour(Tour t)
@@ -88,6 +90,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.DAL
         {
             _context.Tours.Load();
             return _context.Tours;
+        }
+
+        public IEnumerable<TourLog> GetTourLogs()
+        {
+            _context.TourLogs.Load();
+            return _context.TourLogs;
         }
 
         public void EditTourLog(TourLog tourLog)

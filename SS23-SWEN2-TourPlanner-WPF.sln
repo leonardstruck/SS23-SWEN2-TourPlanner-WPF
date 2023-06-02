@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SS23-SWEN2-TourPlanner-WPF.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SS23-SWEN2-TourPlanner-WPF.Tests", "SS23-SWEN2-TourPlanner-WPF.Tests\SS23-SWEN2-TourPlanner-WPF.Tests.csproj", "{AEE8814D-3A81-416A-AD4E-D7612C672093}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapQuest", "MapQuest\MapQuest.csproj", "{47FB81A3-A2D8-4021-BACC-A44FE84FBF58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{AEE8814D-3A81-416A-AD4E-D7612C672093}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEE8814D-3A81-416A-AD4E-D7612C672093}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEE8814D-3A81-416A-AD4E-D7612C672093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47FB81A3-A2D8-4021-BACC-A44FE84FBF58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47FB81A3-A2D8-4021-BACC-A44FE84FBF58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47FB81A3-A2D8-4021-BACC-A44FE84FBF58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47FB81A3-A2D8-4021-BACC-A44FE84FBF58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
