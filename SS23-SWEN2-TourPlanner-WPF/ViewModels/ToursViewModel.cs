@@ -69,7 +69,16 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             this.toursmanager = toursManager;
             this.messageBoxService = messageBoxService;
             this.fileDialogService = fileDialogService;
-            toursManager.GetTours().ToList().ForEach(t => Tours.Add(t));
+
+            toursmanager.GetTours().ToList().ForEach(tour =>
+            {
+                Tours.Add(tour);
+                if(string.IsNullOrEmpty(tour.Image))
+                {
+                    Task.Run(() => toursManager.HandleAPICalls(tour));
+                }
+            });
+
             toursManager.GetTourLogs();
             this.CreateTourCommand = new RelayCommand(param =>
                 {
