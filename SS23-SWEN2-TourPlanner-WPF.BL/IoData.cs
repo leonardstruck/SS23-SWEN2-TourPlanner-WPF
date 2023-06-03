@@ -117,22 +117,18 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                             {
                                 // Deserialize the list from the comma-separated string
                                 string[] listData = value.Split(new string[] { "&&&" }, StringSplitOptions.None);
-                                List<TourLog> logs = new List<TourLog>();
-                                PropertyInfo[] logProperties = typeof(TourLog).GetProperties();
+                                //List<TourLog> logs = new List<TourLog>();
+                                //PropertyInfo[] logProperties = typeof(TourLog).GetProperties();
                                 foreach (string item in listData)
                                 {
                                     // item ist der String mit allen werten von einem log
-                                    
-                                    string[] logData = item.Split(new string[] { "%%%" }, StringSplitOptions.None);
                                     TourLog tl = new TourLog();
-                                    for(int k= 0; k<logData.Length-1; k++)
+                                    tl.ToTourLog(item);
+                                    if (tl.Id != -1)
                                     {
-                                        PropertyInfo logProperty = logProperties[k];
-                                        var converter = TypeDescriptor.GetConverter(logProperty.PropertyType);
-                                        var convertedObject = converter.ConvertFromString(logData[k]);
-                                        logProperty.SetValue(tl, convertedObject);
+                                        //logs.Add(tl);
+                                        tour.TourLogs.Add(tl);
                                     }
-                                    tour.TourLogs.Add(tl);
                                 }
                                 //property.SetValue(tour, logs);
                             }
