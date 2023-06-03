@@ -61,10 +61,10 @@ namespace MapQuest.DirectionsAPI
                 var boundingBoxUlNode = boundingBoxNode["ul"]!;
                 var boundingBoxLrNode = boundingBoxNode["lr"]!;
 
-                res.BoundingBox.ul_lat = double.Parse(boundingBoxUlNode["lat"]!.ToString());
-                res.BoundingBox.ul_lng = double.Parse(boundingBoxUlNode["lng"]!.ToString());
-                res.BoundingBox.lr_lat = double.Parse(boundingBoxLrNode["lat"]!.ToString());
-                res.BoundingBox.lr_lng = double.Parse(boundingBoxLrNode["lng"]!.ToString());
+                res.BoundingBox.ul_lat = boundingBoxUlNode["lat"]!.ToString();
+                res.BoundingBox.ul_lng = boundingBoxUlNode["lng"]!.ToString();
+                res.BoundingBox.lr_lat = boundingBoxLrNode["lat"]!.ToString();
+                res.BoundingBox.lr_lng = boundingBoxLrNode["lng"]!.ToString();
 
                 // ROUTE -> TIME
                 res.Time = TimeSpan.FromSeconds(long.Parse(routeNode["time"]!.ToString()));
