@@ -16,6 +16,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
     public class TourLogsViewModel : BaseViewModel
     {
         private IToursManager _toursManager;
+        private readonly IMessageBoxService messageBoxService;
         public ObservableCollection<TourLog> TourLogs { get; set; } = new ObservableCollection<TourLog>();
 
         public RelayCommand AddTourLogCommand { get; set; }
@@ -39,9 +40,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 
         private TourLog? _currentTourLog;
 
-        public TourLogsViewModel(IToursManager toursManager, Tour tour)
+        public TourLogsViewModel(IToursManager toursManager, IMessageBoxService messageBoxService, Tour tour)
         {
             _toursManager = toursManager;
+            this.messageBoxService = messageBoxService;
             tour.TourLogs.ForEach(tourLog =>
             {
                 TourLogs.Add(tourLog);
@@ -66,7 +68,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             DeleteTourLogCommand = new RelayCommand(_ => {
                 if (CurrentTourLog != null)
                 {
-                    if (MessageBox.Show("Do you really want to delete this Tourlog?",
+                    if (messageBoxService.Show("Do you really want to delete this Tourlog?",
                     "Delete Tourlog",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question) == MessageBoxResult.Yes)

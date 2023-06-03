@@ -17,6 +17,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
     public class ToursViewModel : BaseViewModel
     {
         private readonly IToursManager toursmanager;
+        private readonly IMessageBoxService messageBoxService;
+        private readonly IFileDialogService fileDialogService;
         public TourLogsViewModel? TourLogsVM { get; set; }
 
         public ObservableCollection<Tour> Tours { get; } = new();
@@ -27,6 +29,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         public RelayCommand ExportSingleReportCommand { get; }
         public RelayCommand ExportDataCommand { get; }
         public RelayCommand ImportDataCommand { get; }
+
+        public bool DisableConfirmationDialogs = false;
 
         public Tour? CurrentTour { 
             get { return _currentTour; } 
@@ -40,7 +44,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     return;
                 
 
-                TourLogsVM = new TourLogsViewModel(toursmanager, _currentTour);
+                TourLogsVM = new TourLogsViewModel(toursmanager, messageBoxService, _currentTour);
  
                 OnPropertyChanged(nameof(TourLogsVM));
             } 
@@ -63,9 +67,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             get { return CurrentTour != null; }
         }
 
-        public ToursViewModel(IToursManager toursManager)
+        public ToursViewModel(IToursManager toursManager, IMessageBoxService messageBoxService, IFileDialogService fileDialogService)
         {
             this.toursmanager = toursManager;
+            this.messageBoxService = messageBoxService;
+            this.fileDialogService = fileDialogService;
             toursManager.GetTours().ToList().ForEach(t => Tours.Add(t));
             toursManager.GetTourLogs();
             this.CreateTourCommand = new RelayCommand(param =>
@@ -90,9 +96,9 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             );
             this.DeleteTourCommand = new RelayCommand(_ =>
             {
-                if (TourSelected && CurrentTour != null)
+                if (TourSelected && CurrentTour != null && !DisableConfirmationDialogs)
                 {
-                    if (MessageBox.Show("Do you really want to delete this Tour?",
+                    if (messageBoxService.Show("Do you really want to delete this Tour?",
                     "Delete Tour",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question) == MessageBoxResult.Yes)
@@ -121,16 +127,32 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             });
             this.ExportReportCommand = new RelayCommand(_ =>
             {
-                Report report = new Report();
-                report.CreateReport(Tours);
+                var saveFileDialog = fileDialogService.SaveFileDialog();
+                saveFileDialog.Filter = "PDF Files (*.pdf)|*.pdf";
+
+                saveFileDialog.ShowDialog();
+
+                if (!string.IsNullOrEmpty(saveFileDialog.FileName))
+                {
+                    Report report = new();
+                    report.CreateReport(Tours, saveFileDialog.FileName);
+                }
             });
             this.ExportSingleReportCommand = new RelayCommand(_ =>
             {
                 if (CurrentTour == null)
                     return;
 
-                Report report = new Report();
-                report.CreateReport(CurrentTour);
+                var saveFileDialog = fileDialogService.SaveFileDialog();
+                saveFileDialog.Filter = "PDF Files (*.pdf)|*.pdf";
+
+                saveFileDialog.ShowDialog();
+
+                if (!string.IsNullOrEmpty(saveFileDialog.FileName))
+                {
+                    Report report = new();
+                    report.CreateReport(CurrentTour, saveFileDialog.FileName);
+                }
             });
             this.ExportDataCommand = new RelayCommand(_ =>
             {
@@ -151,15 +173,15 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                 {
                     case MapQuest.DirectionsAPI.GetRouteException:
                         toursManager.DeleteTour(tourError.Tour);
-                        MessageBox.Show($"Failed to generate route: {tourError.Exception?.InnerException?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        messageBoxService.Show($"Failed to generate route: {tourError.Exception?.InnerException?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         break;
 
                     case MapQuest.StaticMapAPI.GetMapException:
-                        MessageBox.Show($"Failed to generate map: {tourError.Exception?.InnerException?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        messageBoxService.Show($"Failed to generate map: {tourError.Exception?.InnerException?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         break;
 
                     default:
-                        MessageBox.Show($"An unhandled exception occurred: {tourError.Exception?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        messageBoxService.Show($"An unhandled exception occurred: {tourError.Exception?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         break;
                 }
             };

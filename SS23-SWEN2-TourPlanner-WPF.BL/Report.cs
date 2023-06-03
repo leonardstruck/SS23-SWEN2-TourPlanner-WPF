@@ -15,13 +15,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 {
     public class Report
     {
-        private SaveFileDialog CreateSaveFileDialog()
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "PDF Files (*.pdf)|*.pdf";
-            return saveFileDialog;
-        }
-
         private void AddHeader(Document document, string headerText, int fontSize = 32, bool isBold = true, iText.Kernel.Colors.Color fontColor = null)
         {
             var header = new Paragraph(headerText);
@@ -102,62 +95,36 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             AddImage(document, tour.Image);
         }
 
-        public void CreateReport(ObservableCollection<Tour> tours, string? filepath = null)
+        public void CreateReport(ObservableCollection<Tour> tours, string filepath)
         {
-            // Show save file dialog if no filepath was provided
-            if (string.IsNullOrEmpty(filepath))
+            // Create the PDF report
+            PdfWriter writer = new PdfWriter(filepath);
+            var pdf = new PdfDocument(writer);
+            var document = new Document(pdf);
+
+            foreach (Tour tour in tours)
             {
-                SaveFileDialog saveFileDialog = CreateSaveFileDialog();
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    filepath = saveFileDialog.FileName;
-                }
+                document.Add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+                CreateTourReport(document, tour);
             }
 
-            if (!string.IsNullOrEmpty(filepath))
-            {
-                // Create the PDF report
-                PdfWriter writer = new PdfWriter(filepath);
-                var pdf = new PdfDocument(writer);
-                var document = new Document(pdf);
-
-                foreach (Tour tour in tours)
-                {
-                    document.Add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-                    CreateTourReport(document, tour);
-                }
-
-                document.Close();
-            }
+            document.Close();
         }
 
-        public void CreateReport(Tour tour, string? filepath = null)
+        public void CreateReport(Tour tour, string filepath)
         {
-            // Show save file dialog if no filepath was provided
-            if (string.IsNullOrEmpty(filepath))
-            {
-                SaveFileDialog saveFileDialog = CreateSaveFileDialog();
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    filepath = saveFileDialog.FileName;
-                }
-            }
+            // Create the PDF report
+            var writer = new PdfWriter(filepath);
+            var pdf = new PdfDocument(writer);
+            var document = new Document(pdf);
 
-            if (!string.IsNullOrEmpty(filepath))
-            {
-                // Create the PDF report
-                var writer = new PdfWriter(filepath);
-                var pdf = new PdfDocument(writer);
-                var document = new Document(pdf);
+            AddHeader(document, tour.Name);
+            AddHeader(document, "Tour Report");
+            AddHeader(document, DateTime.Now.ToString("dd.MMM yyyy"), fontColor: iText.Kernel.Colors.ColorConstants.LIGHT_GRAY);
 
-                AddHeader(document, tour.Name);
-                AddHeader(document, "Tour Report");
-                AddHeader(document, DateTime.Now.ToString("dd.MMM yyyy"), fontColor: iText.Kernel.Colors.ColorConstants.LIGHT_GRAY);
+            CreateTourReport(document, tour);
 
-                CreateTourReport(document, tour);
-
-                document.Close();
-            }
+            document.Close();
         }
     }
 }
