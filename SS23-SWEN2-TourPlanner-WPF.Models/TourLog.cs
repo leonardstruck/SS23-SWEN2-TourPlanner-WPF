@@ -43,7 +43,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
                 TourLog temp = new TourLog();
                 PropertyInfo[] logProperties = typeof(TourLog).GetProperties();
                 string[] logData = tourLogString.Split(new string[] { "%%%" }, StringSplitOptions.None);
-                for (int k = 0; k < logData.Length - 1; k++)
+                for (int k = 0; k < logData.Length; k++)
                 {
                     PropertyInfo logProperty = logProperties[k];
                     var converter = TypeDescriptor.GetConverter(logProperty.PropertyType);
