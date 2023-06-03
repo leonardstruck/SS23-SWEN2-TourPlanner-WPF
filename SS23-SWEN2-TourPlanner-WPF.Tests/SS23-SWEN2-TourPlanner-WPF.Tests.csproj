@@ -26,4 +26,10 @@
     <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF\SS23-SWEN2-TourPlanner-WPF.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Assets\SampleMap.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
