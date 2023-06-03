@@ -93,14 +93,14 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             AddHeader(document, tour.Name, 42);
             AddBasicInfoRow(document, tour);
             AddDescription(document, tour.Description);
-            AddStatistics(document, tour.TourLogs);
+            AddStatistics(document, tour);
             AddTourLogs(document, tour);
             AddImage(document, tour.Image);
         }
 
-        private void AddStatistics(Document document, List<TourLog> tourLogs)
+        private void AddStatistics(Document document, Tour tour)
         {
-            if (tourLogs.Count == 0)
+            if (tour.TourLogs.Count == 0)
                 return;
 
             var header = new Paragraph("Statistics");
@@ -109,20 +109,9 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             header.SetFontColor(iText.Kernel.Colors.ColorConstants.DARK_GRAY);
             document.Add(header);
 
-            var totalRating = 0;
-            var totalTime = new TimeSpan();
-            var totalDifficulty = 0;
-
-            foreach (TourLog tourLog in tourLogs)
-            {
-                totalRating += tourLog.Rating;
-                totalDifficulty += (int)tourLog.Difficulty;
-                totalTime = totalTime.Add(tourLog.TotalTime);
-            }
-
-            var averageRating = (double)totalRating / (double)tourLogs.Count;
-            var averageDifficulty = (double)totalDifficulty / (double)tourLogs.Count;
-            var averageTime = totalTime.Divide(tourLogs.Count);
+            var averageRating = tour.GetAverageRating();
+            var averageDifficulty = tour.GetAverageDifficulty();
+            var averageTime = tour.GetAverageTime();
 
             Table table = new Table(4);
             table.AddHeaderCell("Average Difficulty");
@@ -133,7 +122,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             table.AddCell(((Difficulty)averageDifficulty).ToString());
             table.AddCell(averageTime.ToString());
             table.AddCell(averageRating.ToString());
-            table.AddCell(tourLogs.Count.ToString());
+            table.AddCell(tour.TourLogs.Count.ToString());
 
             document.Add(table);
         }
