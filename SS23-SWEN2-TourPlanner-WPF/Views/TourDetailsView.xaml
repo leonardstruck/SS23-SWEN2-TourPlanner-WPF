@@ -11,6 +11,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:StringIsNullToBool  x:Key="StringIsNullToBool" />
+        <converters:ListIsEmptyToBool x:Key="ListIsEmptyToBool" />
     </UserControl.Resources>
     <DockPanel Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}" >
         <Label Content="Details" DockPanel.Dock="Top" FontWeight="DemiBold" FontSize="13"/>
@@ -48,8 +49,12 @@
                     <Image x:Name="imgeControl" Source="{Binding Path=CurrentTour.ImageSource}"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Misc">
-
+            <TabItem Header="Maneuvers">
+                <Grid>
+                    <xctk:BusyIndicator IsBusy="{Binding Path=CurrentTour.Maneuvers, Converter={StaticResource ListIsEmptyToBool}}" BusyContent="Loading Maneuvers..." >
+                    </xctk:BusyIndicator>
+                    <ListBox ItemsSource="{Binding Path=CurrentTour.Maneuvers}"/>
+                </Grid>
             </TabItem>
         </TabControl>
     </DockPanel>

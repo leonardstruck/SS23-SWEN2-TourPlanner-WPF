@@ -71,6 +71,22 @@ namespace MapQuest.DirectionsAPI
 
                 // ROUTE -> DISTANCE
                 res.Distance = double.Parse(routeNode["distance"]!.ToString(), CultureInfo.InvariantCulture);
+
+                // ROUTE -> LEGS
+                var legs = routeNode["legs"] as JsonArray ?? throw new Exception("no route legs provided");
+                // ROUTE -> LEGS -> MANEUVERS
+                var maneuverNodes = legs[0]!["maneuvers"] as JsonArray ?? throw new Exception("no maneuvers provided");
+
+                var maneuvers = new List<string>();
+                foreach(var maneuverNode in maneuverNodes)
+                {
+                    if(maneuverNode == null) continue;
+                    var narrative = maneuverNode["narrative"]!.ToString() ?? throw new Exception("no narrative provided");
+                    maneuvers.Add(narrative);
+                }
+
+                res.Maneuvers = maneuvers;
+
                 return res;
             } catch (Exception e)
             {
@@ -94,6 +110,7 @@ namespace MapQuest.DirectionsAPI
             public BoundingBox BoundingBox;
             public TimeSpan Time;
             public double Distance;
+            public List<string> Maneuvers;
         }
 
         public enum RouteType
@@ -108,7 +125,6 @@ namespace MapQuest.DirectionsAPI
             K,
             M
         }
-
        
     }
     public class GetRouteException : Exception
