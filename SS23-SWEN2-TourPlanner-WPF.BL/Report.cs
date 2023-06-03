@@ -1,10 +1,12 @@
-﻿using iText.Kernel.Pdf;
+using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using Microsoft.Win32;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
@@ -31,7 +33,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                 fmt = "%d' days 'h' hours 'm' minutes'";
             else
                 fmt = "h' hours 'm' minutes'";
-            var basicInfo = new Paragraph($"{tour.From} - {tour.To}, {Math.Round(tour.Distance, 2)}km \n{tour.Time.ToString(fmt)}");
+            var basicInfo = new Paragraph($"{tour.From} - {tour.To},\n {Math.Round(tour.Distance, 2)}km, {tour.Time.ToString(fmt)}");
             basicInfo.SetFontSize(18);
             basicInfo.SetFontColor(iText.Kernel.Colors.ColorConstants.LIGHT_GRAY);
             document.Add(basicInfo);
@@ -88,19 +90,22 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
         private void CreateTourReport(Document document, Tour tour)
         {
-            AddHeader(document, "Tour Report", 64);
+            AddHeader(document, tour.Name, 42);
             AddBasicInfoRow(document, tour);
             AddDescription(document, tour.Description);
             AddTourLogs(document, tour);
             AddImage(document, tour.Image);
         }
 
-        public void CreateReport(ObservableCollection<Tour> tours, string filepath)
+        public void CreateReport(IEnumerable<Tour> tours, string filepath)
         {
             // Create the PDF report
             PdfWriter writer = new PdfWriter(filepath);
             var pdf = new PdfDocument(writer);
             var document = new Document(pdf);
+
+            AddHeader(document, "Tour Report", 64);
+            AddHeader(document, DateTime.Now.ToString("dd. MMM yyyy"), isBold: false, fontSize: 12, fontColor: iText.Kernel.Colors.ColorConstants.LIGHT_GRAY);
 
             foreach (Tour tour in tours)
             {
@@ -118,12 +123,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             var pdf = new PdfDocument(writer);
             var document = new Document(pdf);
 
-            AddHeader(document, tour.Name);
-            AddHeader(document, "Tour Report");
-            AddHeader(document, DateTime.Now.ToString("dd.MMM yyyy"), fontColor: iText.Kernel.Colors.ColorConstants.LIGHT_GRAY);
-
+            AddHeader(document, "Tour Report", 64);
+            AddHeader(document, DateTime.Now.ToString("dd. MMM yyyy"), isBold:false, fontSize:12, fontColor: iText.Kernel.Colors.ColorConstants.LIGHT_GRAY);
+            document.Add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+          
             CreateTourReport(document, tour);
-
+          
             document.Close();
         }
     }

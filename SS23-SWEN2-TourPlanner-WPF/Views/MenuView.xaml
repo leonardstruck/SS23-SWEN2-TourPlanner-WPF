@@ -16,8 +16,8 @@
         <MenuItem Header="_File">
             <MenuItem Header="_Import" Command="{Binding Path=ImportDataCommand}"/>
             <MenuItem Header="_Export" Command="{Binding Path=ExportDataCommand}"/>
-            <MenuItem Header="_Generate Report" Command="{Binding Path=ExportReportCommand}"/>
-            <MenuItem Header="_Generate Single Report" Command="{Binding Path=ExportSingleReportCommand}"/>
+            <MenuItem Header="_Generate Report for all Tours" Command="{Binding Path=ExportReportCommand}"/>
+            <MenuItem Header="_Generate Report for selected Tour" Command="{Binding Path=ExportSingleReportCommand}"/>
         </MenuItem>
         <MenuItem Header="_Help" HorizontalAlignment="Right" >
 
