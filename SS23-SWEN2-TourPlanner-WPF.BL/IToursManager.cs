@@ -27,7 +27,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         IEnumerable<Tour> GetTours();
         IEnumerable<TourLog> GetTourLogs();
         IEnumerable<Tour> ImportData();
-        void ExportData(ObservableCollection<Tour> tours);
+        void ExportData(IEnumerable<Tour> tours);
     }
 
     public struct TourError
