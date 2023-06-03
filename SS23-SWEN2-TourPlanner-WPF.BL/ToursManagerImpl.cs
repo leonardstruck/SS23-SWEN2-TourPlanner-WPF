@@ -57,6 +57,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
                 tour.Distance = route.Distance;
                 tour.Time = route.Time;
+                tour.Maneuvers = route.Maneuvers;
 
                 var map = await mapQuestAPI.StaticMap.GetMap(new MapQuest.StaticMapAPI.GetMapReq { BoundingBox = route.BoundingBox, Height = 600, Width = 800, SessionId = route.SessionId });
 

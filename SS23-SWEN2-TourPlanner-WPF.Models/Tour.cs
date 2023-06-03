@@ -28,6 +28,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
         public string Image { get; set; } // path to image
         public List<TourLog> TourLogs { get; set; } = new();
 
+        public List<string> Maneuvers { get; set; } = new();
+
         public Tour(string Name)
         {
             this.Name = Name;
@@ -39,7 +41,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
             this.Time = new TimeSpan(0);
             this.Image = string.Empty;
             this.TourLogs = new List<TourLog>();
-     
         }
 
         public BitmapImage ImageSource { get
