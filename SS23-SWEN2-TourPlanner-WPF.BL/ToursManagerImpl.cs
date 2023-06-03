@@ -20,7 +20,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         private readonly IDataManager _dataManager;
         private readonly MapQuestAPI mapQuestAPI;
 
-        public ToursManagerImpl(IDataManager dataManager) { _dataManager = dataManager; }
+        //public ToursManagerImpl(IDataManager dataManager) { _dataManager = dataManager; }
         public event EventHandler<Tour>? TourChanged;
         public event EventHandler<Tour>? TourAdded;
         public event EventHandler<Tour>? TourRemoved;

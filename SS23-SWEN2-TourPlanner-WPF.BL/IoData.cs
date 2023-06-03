@@ -117,8 +117,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                             {
                                 // Deserialize the list from the comma-separated string
                                 string[] listData = value.Split(new string[] { "&&&" }, StringSplitOptions.None);
-                                //List<TourLog> logs = new List<TourLog>();
-                                //PropertyInfo[] logProperties = typeof(TourLog).GetProperties();
                                 foreach (string item in listData)
                                 {
                                     // item ist der String mit allen werten von einem log
@@ -126,11 +124,9 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                                     tl.ToTourLog(item);
                                     if (tl.Id != -1)
                                     {
-                                        //logs.Add(tl);
                                         tour.TourLogs.Add(tl);
                                     }
                                 }
-                                //property.SetValue(tour, logs);
                             }
                             else if(property.PropertyType == typeof(BitmapImage))
                             {
