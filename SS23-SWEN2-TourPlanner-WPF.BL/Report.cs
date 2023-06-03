@@ -113,7 +113,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             var totalTime = new TimeSpan();
             var totalDifficulty = 0;
 
-            foreach(TourLog tourLog in tourLogs)
+            foreach (TourLog tourLog in tourLogs)
             {
                 totalRating += tourLog.Rating;
                 totalDifficulty += (int)tourLog.Difficulty;
