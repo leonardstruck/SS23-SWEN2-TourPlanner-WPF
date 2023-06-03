@@ -43,6 +43,7 @@ namespace SS23_SWEN2_TourPlanner_WPF
             services.AddSingleton<IDataManager, DataManagerEFImpl>();
             services.AddSingleton<IToursManager, ToursManagerImpl>();
             services.AddSingleton<IMessageBoxService, MessageBoxService>();
+            services.AddSingleton<IFileDialogService, FileDialogService>();
 
             // create viewmodels
             services.AddSingleton<ToursViewModel>();

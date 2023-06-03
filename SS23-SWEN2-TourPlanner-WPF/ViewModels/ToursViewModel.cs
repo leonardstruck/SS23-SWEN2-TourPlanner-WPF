@@ -17,6 +17,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
     {
         private readonly IToursManager toursmanager;
         private readonly IMessageBoxService messageBoxService;
+        private readonly IFileDialogService fileDialogService;
         public TourLogsViewModel? TourLogsVM { get; set; }
 
         public ObservableCollection<Tour> Tours { get; } = new();
@@ -63,10 +64,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             get { return CurrentTour != null; }
         }
 
-        public ToursViewModel(IToursManager toursManager, IMessageBoxService messageBoxService)
+        public ToursViewModel(IToursManager toursManager, IMessageBoxService messageBoxService, IFileDialogService fileDialogService)
         {
             this.toursmanager = toursManager;
             this.messageBoxService = messageBoxService;
+            this.fileDialogService = fileDialogService;
             toursManager.GetTours().ToList().ForEach(t => Tours.Add(t));
             toursManager.GetTourLogs();
             this.CreateTourCommand = new RelayCommand(param =>
@@ -122,16 +124,32 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             });
             this.ExportReportCommand = new RelayCommand(_ =>
             {
-                Report report = new Report();
-                report.CreateReport(Tours);
+                var saveFileDialog = fileDialogService.SaveFileDialog();
+                saveFileDialog.Filter = "PDF Files (*.pdf)|*.pdf";
+
+                saveFileDialog.ShowDialog();
+
+                if (!string.IsNullOrEmpty(saveFileDialog.FileName))
+                {
+                    Report report = new();
+                    report.CreateReport(Tours, saveFileDialog.FileName);
+                }
             });
             this.ExportSingleReportCommand = new RelayCommand(_ =>
             {
                 if (CurrentTour == null)
                     return;
 
-                Report report = new Report();
-                report.CreateReport(CurrentTour);
+                var saveFileDialog = fileDialogService.SaveFileDialog();
+                saveFileDialog.Filter = "PDF Files (*.pdf)|*.pdf";
+
+                saveFileDialog.ShowDialog();
+
+                if (!string.IsNullOrEmpty(saveFileDialog.FileName))
+                {
+                    Report report = new();
+                    report.CreateReport(CurrentTour, saveFileDialog.FileName);
+                }
             });
 
             // handle errors from tourmanager
