@@ -24,6 +24,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         public ObservableCollection<Tour> Tours { get; } = new();
         public RelayCommand CreateTourCommand { get; }
         public RelayCommand DeleteTourCommand { get; }
+        public RelayCommand EmptyTours { get; }
         public RelayCommand EditTourCommand { get; }
         public RelayCommand ExportReportCommand { get; }
         public RelayCommand ExportSingleReportCommand { get; }
@@ -67,6 +68,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             get { return CurrentTour != null; }
         }
 
+
         public ToursViewModel(IToursManager toursManager, IMessageBoxService messageBoxService, IFileDialogService fileDialogService)
         {
             this.toursmanager = toursManager;
@@ -108,7 +110,14 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     }
                 }
             });
-
+            this.EmptyTours = new RelayCommand(_ =>
+            {
+                CurrentTour = null;
+                foreach(Tour t in Tours)
+                {
+                    toursManager.DeleteTour(t);
+                }
+            });
             this.EditTourCommand = new RelayCommand(param =>
             {
                 if (CurrentTour == null)
@@ -185,10 +194,39 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             });
             this.ImportDataCommand = new RelayCommand(_ =>
             {
-                foreach(Tour t in toursManager.ImportData())
+                var openFileDialog = fileDialogService.OpenFileDialog();
+                openFileDialog.Filter = "CSV Files (*.csv)|*.csv";
+                //openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                openFileDialog.ShowDialog();
+
+                try
                 {
-                    Tours.Add(t);
+                    var importedTours = toursManager.ImportData(openFileDialog.FileName);
+                    IEnumerable<Tour> additionalTours = importedTours.Where(tour => !Tours.Any(x => x.Equals(tour))).ToList();
+                    var count = 0;
+                    foreach (Tour t in additionalTours)
+                    {
+                        Tours.Add(t);
+                        ++count;
+                    }
+                    messageBoxService.Show(
+                        $"Imported {count} Tours successfully",
+                        "Success",
+                        MessageBoxButton.OK
+                    );
                 }
+                catch(Exception e)
+                {
+                    messageBoxService.Show(
+                        $"An Error occured",
+                        "Error",
+                        MessageBoxButton.OK
+                    );
+                }
+
+                
             });
 
             // handle errors from tourmanager

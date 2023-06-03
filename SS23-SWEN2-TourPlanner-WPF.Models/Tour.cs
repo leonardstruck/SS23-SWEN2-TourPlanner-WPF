@@ -128,5 +128,21 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
             }
             
         }
+
+        public override bool Equals(Object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Tour temp = (Tour)obj;
+                return (
+                    this.Id == temp.Id
+                );
+            }
+        }
     }
 }

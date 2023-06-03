@@ -156,10 +156,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             io.ExportData(tours, fileName);
         }
 
-        public IEnumerable<Tour> ImportData()
+        public IEnumerable<Tour> ImportData(string fileName)
         {
             var io = new IoData();
-            return io.ImportData();
+            return io.ImportData(fileName);
         }
     }
 }

@@ -53,50 +53,35 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             
         }
 
-        public IEnumerable<Tour> ImportData()
+        public IEnumerable<Tour> ImportData(string fileName)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = "c:\\";
-            openFileDialog.Filter = "CSV Files (*.csv)|*.csv";
-            openFileDialog.FilterIndex = 2;
-            openFileDialog.RestoreDirectory = true;
-
-            if (openFileDialog.ShowDialog() == true)
+            using (FileStream fs = File.OpenRead(fileName))
             {
-                //Get the path of specified file
-                string filePath = openFileDialog.FileName;
-                //Read the contents of the file into a stream
-                var fileStream = openFileDialog.OpenFile();
+                string[] lines = File.ReadAllLines(fileName);
 
-                using (StreamReader reader = new StreamReader(fileStream))
+                // [0] = header row
+                // [1..n] = data rows
+                if (lines.Length < 2)
+                    return new List<Tour>();
+
+                // check if header row is valid
+                PropertyInfo[] properties = typeof(Tour).GetProperties();
+                string headerRow = string.Join(",", properties.Select(prop => prop.Name));
+                if (lines[0] != headerRow)
+                    return new List<Tour>();
+
+                List<Tour> tours = new List<Tour>();
+                for (int i = 1; i < lines.Length; i++)
                 {
-                    string[] lines = File.ReadAllLines(filePath);
-
-                    // [0] = header row
-                    // [1..n] = data rows
-                    if (lines.Length < 2)
-                        return new List<Tour>();
-
-                    // check if header row is valid
-                    PropertyInfo[] properties = typeof(Tour).GetProperties();
-                    string headerRow = string.Join(",", properties.Select(prop => prop.Name));
-                    if (lines[0] != headerRow)
-                        return new List<Tour>();
-
-                    List<Tour> tours = new List<Tour>();
-                    for (int i = 1; i < lines.Length; i++)
-                    {
-                        Tour tour = new Tour("");
-                        tour.ToTour(lines[i]);
-                        if(tour.Id != -1)
-                            tours.Add(tour);
-                    }
-                    return tours;
-
+                    Tour tour = new Tour("");
+                    tour.ToTour(lines[i]);
+                    if (tour.Id != -1)
+                        tours.Add(tour);
                 }
+                return tours;
             }
+            
 
-            return new List<Tour>();
         }
 
         private string ConvertValueToString(object value)
