@@ -21,9 +21,9 @@ using System.Windows.Media.Imaging;
 
 namespace SS23_SWEN2_TourPlanner_WPF.BL
 {
-    internal class IoData
+    public class IoData
     {
-        public void ExportData(ObservableCollection<Tour> tours)
+        public void ExportData(IEnumerable<Tour> tours)
         {
             
             // Show save file dialog
@@ -69,7 +69,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                 
         }
 
-        public List<Tour> ImportData()
+        public IEnumerable<Tour> ImportData()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "c:\\";
