@@ -156,7 +156,32 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             });
             this.ExportDataCommand = new RelayCommand(_ =>
             {
-                toursManager.ExportData(Tours);
+                var saveFileDialog = fileDialogService.SaveFileDialog();
+                saveFileDialog.Filter = "CSV Files (*.csv)|*.csv";
+
+                saveFileDialog.ShowDialog();
+                try
+                {
+                    if (!string.IsNullOrEmpty(saveFileDialog.FileName))
+                    {
+                        toursManager.ExportData(Tours, saveFileDialog.FileName);
+                        messageBoxService.Show(
+                            "Exported successfully",
+                            "Success",
+                            MessageBoxButton.OK
+                        );
+                    }
+                }
+                catch(Exception e)
+                {
+                    // log exception
+                    messageBoxService.Show(
+                        "An Error occured while exporting the Tours", 
+                        "Error",
+                        MessageBoxButton.OK
+                        );
+                }
+                
             });
             this.ImportDataCommand = new RelayCommand(_ =>
             {

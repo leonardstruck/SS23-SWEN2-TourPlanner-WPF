@@ -23,50 +23,34 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 {
     public class IoData
     {
-        public void ExportData(IEnumerable<Tour> tours)
+        public void ExportData(IEnumerable<Tour> tours, string fileName)
         {
             
-            // Show save file dialog
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "CSV Files (*.csv)|*.csv";
-            if (saveFileDialog.ShowDialog() == true)
+            
+            try
             {
-                try
+                PropertyInfo[] properties = typeof(Tour).GetProperties();
+                StringBuilder csvData = new StringBuilder();
+
+                // Append the header row
+                string headerRow = string.Join(",", properties.Select(prop => prop.Name));
+                csvData.AppendLine(headerRow);
+
+                // Append the data rows
+                foreach (Tour data in tours)
                 {
-                    string filePath = saveFileDialog.FileName;
-
-                    // Get data from db
-                    IDataManager dataManager = new DataManagerEFImpl();
-
-                    PropertyInfo[] properties = typeof(Tour).GetProperties();
-                    StringBuilder csvData = new StringBuilder();
-
-                    // Append the header row
-                    string headerRow = string.Join(",", properties.Select(prop => prop.Name));
-                    csvData.AppendLine(headerRow);
-
-                    // Append the data rows
-                    foreach (Tour data in tours)
-                    {
-                        string dataRow = string.Join(",", properties.Select(p => ConvertValueToString(p.GetValue(data))));
-                        csvData.AppendLine(dataRow);
-                    }
-
-                    File.WriteAllText(filePath, csvData.ToString());
-
-
-                    MessageBox.Show("Data export successful.");
+                    string dataRow = string.Join(",", properties.Select(p => ConvertValueToString(p.GetValue(data))));
+                    csvData.AppendLine(dataRow);
                 }
-                catch (Exception e)
-                {
-                    MessageBox.Show("Data export failed.");
-                }
-                finally
-                {
 
-                }
+                File.WriteAllText(fileName, csvData.ToString());
             }
-                
+            catch (Exception e)
+            {
+                throw; 
+                //MessageBox.Show("Data export failed.");
+            }
+            
         }
 
         public IEnumerable<Tour> ImportData()
