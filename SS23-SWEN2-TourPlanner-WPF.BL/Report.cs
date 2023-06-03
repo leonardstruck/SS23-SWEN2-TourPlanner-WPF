@@ -5,6 +5,8 @@ using iText.Layout.Properties;
 using Microsoft.Win32;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
@@ -102,7 +104,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             AddImage(document, tour.Image);
         }
 
-        public void CreateReport(ObservableCollection<Tour> tours, string? filepath = null)
+        public void CreateReport(IEnumerable<Tour> tours, string? filepath = null)
         {
             // Show save file dialog if no filepath was provided
             if (string.IsNullOrEmpty(filepath))
