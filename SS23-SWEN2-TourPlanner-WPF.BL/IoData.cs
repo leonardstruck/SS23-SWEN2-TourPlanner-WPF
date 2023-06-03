@@ -102,45 +102,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                     List<Tour> tours = new List<Tour>();
                     for (int i = 1; i < lines.Length; i++)
                     {
-                        string[] data = lines[i].Split(',');
                         Tour tour = new Tour("");
-                        for (int j = 0; j < data.Length; j++)
-                        {
-                            PropertyInfo property = properties[j];
-                            string value = data[j];
-                            if (property.PropertyType == typeof(double))
-                            {
-                                
-                                property.SetValue(tour, double.Parse(value, CultureInfo.InvariantCulture));
-                            }
-                            else if(property.PropertyType == typeof(List<TourLog>))
-                            {
-                                // Deserialize the list from the comma-separated string
-                                string[] listData = value.Split(new string[] { "&&&" }, StringSplitOptions.None);
-                                foreach (string item in listData)
-                                {
-                                    // item ist der String mit allen werten von einem log
-                                    TourLog tl = new TourLog();
-                                    tl.ToTourLog(item);
-                                    if (tl.Id != -1)
-                                    {
-                                        tour.TourLogs.Add(tl);
-                                    }
-                                }
-                            }
-                            else if(property.PropertyType == typeof(BitmapImage))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                // value muss noch richtig geparst werden
-                                var converter = TypeDescriptor.GetConverter(property.PropertyType);
-                                var convertedObject = converter.ConvertFromString(value);
-                                property.SetValue(tour, convertedObject);
-                            }
-                        }
-                        tours.Add(tour);
+                        tour.ToTour(lines[i]);
+                        if(tour.Id != -1)
+                            tours.Add(tour);
                     }
                     return tours;
 
