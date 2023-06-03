@@ -20,10 +20,18 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF.BL\SS23-SWEN2-TourPlanner-WPF.BL.csproj" />
+    <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF.DAL\SS23-SWEN2-TourPlanner-WPF.DAL.csproj" />
+    <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF.Models\SS23-SWEN2-TourPlanner-WPF.Models.csproj" />
     <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF\SS23-SWEN2-TourPlanner-WPF.csproj" />
   </ItemGroup>
 
+	<Target Name="CopyConfig" AfterTargets="Build">
+		<Copy SourceFiles="..\SS23-SWEN2-TourPlanner-WPF\App.config"     
+			  DestinationFiles="$(TargetDir)testhost.dll.config"/>
+	</Target>
 </Project>

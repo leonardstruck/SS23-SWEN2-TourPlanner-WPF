@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SS23_SWEN2_TourPlanner_WPF.Tests.ViewModels
 {
@@ -15,6 +16,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Tests.ViewModels
     public class TourLogsViewModelTest
     {
         private Mock<IToursManager> _toursManagerMock;
+        private Mock<IMessageBoxService> _messageBoxServiceMock;
         private TourLogsViewModel _viewModel;
         private Tour _tour;
 
@@ -22,6 +24,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.Tests.ViewModels
         public void Setup()
         {
             _toursManagerMock = new Mock<IToursManager>();
+            _messageBoxServiceMock = new Mock<IMessageBoxService>();
+            _messageBoxServiceMock.Setup(m => m.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<MessageBoxResult>(), It.IsAny<MessageBoxOptions>())).Returns(MessageBoxResult.Yes);
             _tour = new Tour("Test-Tour")
             {
                 Id = 1,
@@ -30,7 +34,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Tests.ViewModels
             _tour.TourLogs.Add(new TourLog() { Id = 1 });
             _tour.TourLogs.Add(new TourLog() { Id = 2 });
 
-            _viewModel = new TourLogsViewModel(_toursManagerMock.Object, _tour);
+            _viewModel = new TourLogsViewModel(_toursManagerMock.Object, _messageBoxServiceMock.Object, _tour);
         }
 
         [Test]
