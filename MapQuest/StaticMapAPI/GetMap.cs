@@ -21,7 +21,7 @@ namespace MapQuest.StaticMapAPI
 
                 query.Add("key", _apiKey);
 
-                query.Add("boundingBox", $"{req.BoundingBox.ul_lat},{req.BoundingBox.ul_lng},{req.BoundingBox.lr_lat},{req.BoundingBox.lr_lng}");
+                query.Add("boundingBox", $"{req.BoundingBox.ul_lat:N5},{req.BoundingBox.ul_lng:N5},{req.BoundingBox.lr_lat:N5},{req.BoundingBox.lr_lng:N5}");
                 query.Add("size", $"{req.Width},{req.Height}");
 
                 if (req.SessionId != null)
