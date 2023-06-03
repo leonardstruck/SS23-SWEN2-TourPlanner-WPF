@@ -10,8 +10,14 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 {
     public interface IToursManager
     {
+        event EventHandler<Tour>? TourChanged;
+        event EventHandler<Tour>? TourAdded;
+        event EventHandler<Tour>? TourRemoved;
+
+        event EventHandler<TourError>? TourError;
         void EditTour(Tour t);
-        Task<Tour> AddTour(Tour t);
+        bool IsApiCallNecessary(Tour t);
+        Task AddTour(Tour t);
 
         void AddTourLog(Tour tour, TourLog tourLog);
 
@@ -22,5 +28,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         IEnumerable<TourLog> GetTourLogs();
         IEnumerable<Tour> ImportData();
         void ExportData(ObservableCollection<Tour> tours);
+    }
+
+    public struct TourError
+    {
+        public Tour Tour;
+        public Exception? Exception;
     }
 }

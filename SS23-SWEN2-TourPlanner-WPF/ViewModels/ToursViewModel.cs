@@ -1,6 +1,7 @@
 ﻿using SS23_SWEN2_TourPlanner_WPF;
 using SS23_SWEN2_TourPlanner_WPF.BL;
 using SS23_SWEN2_TourPlanner_WPF.Models;
+using SS23_SWEN2_TourPlanner_WPF.Views;
 using SS23_SWEN2_TourPlanner_WPF.Windows;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             set {
                 // load tour from toursmanager
                 _currentTour = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(CurrentTour));
                 OnPropertyChanged(nameof(TourSelected));
 
                 if (_currentTour == null)
@@ -76,31 +77,29 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                         addTourDialog.Show();
 
                         // listen for addTour Events
-                        addTourViewModel.AddButtonClicked += async (_, tour) =>
+                        addTourViewModel.AddButtonClicked += (_, tour) =>
                         {
                             addTourViewModel.IsEnabled = false;
-                            try
-                            {
-                                tour = await toursManager.AddTour(tour);
-                                Tours.Add(tour);
-                            }
-                            catch
-                            {
-
-                            }
+                            var task = Task.Run(() => toursManager.AddTour(tour));    
                             addTourDialog?.Close();
                         };
+
+                       
                     }
                 }
             );
             this.DeleteTourCommand = new RelayCommand(_ =>
             {
-                if (TourSelected)
+                if (TourSelected && CurrentTour != null)
                 {
-                    var temp = CurrentTour;
-                    CurrentTour = null;
-                    toursManager.DeleteTour(temp);
-                    Tours.Remove(Tours.Where(i => i.Id == temp.Id).Single());
+                    if (MessageBox.Show("Do you really want to delete this Tour?",
+                    "Delete Tour",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                      toursManager.DeleteTour(CurrentTour);
+                      CurrentTour = null;
+                    }
                 }
             });
 
@@ -117,23 +116,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                 editTourVM.EditButtonClicked += (_, tour) =>
                 {
                     toursManager.EditTour(tour);
-
-                    // Replace tour in Tour List with the changed tour
-                    // find tour that has the same Id
-                    var tourInList = Tours.Single(t => t.Id == tour.Id);
-                    if (tourInList == null)
-                        return;
-
-                    int index = Tours.IndexOf(tourInList);
-                    if (index != -1)
-                    {
-                        Tours.RemoveAt(index);
-                        Tours.Insert(index, tour);
-                    }
-
-                    CurrentTour = tour;
-
-
                     editTourDialog?.Close();
                 };
             });
@@ -161,6 +143,77 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     Tours.Add(t);
                 }
             });
+
+            // handle errors from tourmanager
+            toursManager.TourError += (_, tourError) =>
+            {
+                switch (tourError.Exception)
+                {
+                    case MapQuest.DirectionsAPI.GetRouteException:
+                        toursManager.DeleteTour(tourError.Tour);
+                        MessageBox.Show($"Failed to generate route: {tourError.Exception?.InnerException?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        break;
+
+                    case MapQuest.StaticMapAPI.GetMapException:
+                        MessageBox.Show($"Failed to generate map: {tourError.Exception?.InnerException?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        break;
+
+                    default:
+                        MessageBox.Show($"An unhandled exception occurred: {tourError.Exception?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        break;
+                }
+            };
+            
+            // add tour if tourmanager emits event
+            toursManager.TourAdded += (_, tour) =>
+            {
+                // Make UI Changes in UI Thread (avoid exception)
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Tours.Add(tour);
+                });
+            };
+
+            // remove tour if tourmanager emits event
+            toursManager.TourRemoved += (_, tour) =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Tours.Remove(Tours.Where(t => t.Id == tour.Id).Single());
+                });
+            };
+
+            // update tour if tourmanager emits event
+            toursManager.TourChanged += (_, tour) =>
+            {
+                // Make UI Changes in UI Thread (avoid exception)
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (tour != null)
+                    {
+                        tour = tour as Tour;
+
+                        // Replace tour in Tour List with the changed tour
+                        // find tour that has the same Id
+                        var tourInList = Tours.Single(t => t.Id == tour.Id);
+                        if (tourInList == null)
+                            return;
+
+                        int index = Tours.IndexOf(tourInList);
+                        if (index != -1)
+                        {
+                            var isSelected = CurrentTour?.Id == tourInList.Id;
+                            Tours.RemoveAt(index);
+                            Tours.Insert(index, tour);
+
+                            if(isSelected)
+                                CurrentTour = Tours[index];
+                        }
+
+                    }
+                });
+                
+            };
         }
 
     }
