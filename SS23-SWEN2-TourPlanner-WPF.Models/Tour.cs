@@ -33,7 +33,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
 
         public Tour(string Name)
         {
-            this.Id = -1;
+            //this.Id = -1;
             this.Name = Name;
             this.Description = string.Empty;
             this.From = string.Empty;
@@ -92,6 +92,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
                             // item ist der String mit allen werten von einem log
                             TourLog tl = new TourLog();
                             tl.ToTourLog(item);
+                            tl.Id = 0;
                             if (tl.Id != -1)
                             {
                                 tour.TourLogs.Add(tl);

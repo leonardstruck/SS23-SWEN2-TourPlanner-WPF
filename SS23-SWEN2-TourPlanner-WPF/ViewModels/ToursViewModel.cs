@@ -183,7 +183,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                 }
                 
             });
-            this.ImportDataCommand = new RelayCommand(_ =>
+            this.ImportDataCommand = new RelayCommand(async _ =>
             {
                 var openFileDialog = fileDialogService.OpenFileDialog();
                 openFileDialog.Filter = "CSV Files (*.csv)|*.csv";
@@ -194,16 +194,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 
                 try
                 {
-                    var importedTours = toursManager.ImportData(openFileDialog.FileName);
-                    IEnumerable<Tour> additionalTours = importedTours.Where(tour => !Tours.Any(x => x.Equals(tour))).ToList();
-                    var count = 0;
-                    foreach (Tour t in additionalTours)
-                    {
-                        Tours.Add(t);
-                        ++count;
-                    }
+                    var importedTours = await toursManager.ImportData(openFileDialog.FileName);
+                    //IEnumerable<Tour> additionalTours = importedTours.Where(tour => !Tours.Any(x => x.Equals(tour))).ToList();
+                    
                     messageBoxService.Show(
-                        $"Imported {count} Tours successfully",
+                        $"Imported Tours successfully",
                         "Success",
                         MessageBoxButton.OK
                     );

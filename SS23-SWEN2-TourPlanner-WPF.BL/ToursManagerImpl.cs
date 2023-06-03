@@ -156,10 +156,19 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             io.ExportData(tours, fileName);
         }
 
-        public IEnumerable<Tour> ImportData(string fileName)
+        public async Task<IEnumerable<Tour>> ImportData(string fileName)
         {
             var io = new IoData();
-            return io.ImportData(fileName);
+            var newTours = io.ImportData(fileName);
+            List<Task> tasks = newTours.Select(async tour =>
+            {
+                tour.Id = 0;
+                await AddTour(tour);
+            }).ToList();
+
+            await Task.WhenAll(tasks);
+
+            return newTours;
         }
     }
 }

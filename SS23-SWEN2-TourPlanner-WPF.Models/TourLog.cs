@@ -30,7 +30,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
 
         public TourLog()
         {
-            Id = -1;
+            //Id = -1;
         }
 
         public override string ToString()
