@@ -8,9 +8,9 @@ namespace MapQuest.Structs
 {
     public struct BoundingBox
     {
-        public float ul_lat;
-        public float ul_lng;
-        public float lr_lat;
-        public float lr_lng;
+        public double ul_lat;
+        public double ul_lng;
+        public double lr_lat;
+        public double lr_lng;
     }
 }
