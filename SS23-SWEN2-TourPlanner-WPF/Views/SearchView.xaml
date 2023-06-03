@@ -14,7 +14,11 @@
             <ColumnDefinition Width="60" />
             <ColumnDefinition Width="80" />
         </Grid.ColumnDefinitions>
-        <TextBox VerticalContentAlignment="Center" IsEnabled="{Binding Path=UIElementIsEnabled}" Text="{Binding SearchTerm}" />
+        <TextBox VerticalContentAlignment="Center" IsEnabled="{Binding Path=UIElementIsEnabled}" Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged}">
+            <TextBox.InputBindings>
+                <KeyBinding Command="{Binding Path=SearchButtonClick}" Key="Enter" />
+            </TextBox.InputBindings>
+        </TextBox>
         <Button Content="Clear" Grid.Column="1" IsEnabled="{Binding Path=IsSearching}" Command="{Binding Path=SearchClearClick}" />
         <Button Content="Search" Grid.Column="2" Command="{Binding Path=SearchButtonClick}"/>
     </Grid>
