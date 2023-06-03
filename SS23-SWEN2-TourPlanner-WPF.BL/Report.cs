@@ -93,8 +93,49 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             AddHeader(document, tour.Name, 42);
             AddBasicInfoRow(document, tour);
             AddDescription(document, tour.Description);
+            AddStatistics(document, tour.TourLogs);
             AddTourLogs(document, tour);
             AddImage(document, tour.Image);
+        }
+
+        private void AddStatistics(Document document, List<TourLog> tourLogs)
+        {
+            if (tourLogs.Count == 0)
+                return;
+
+            var header = new Paragraph("Statistics");
+            header.SetFontSize(16);
+            header.SetBold();
+            header.SetFontColor(iText.Kernel.Colors.ColorConstants.DARK_GRAY);
+            document.Add(header);
+
+            var totalRating = 0;
+            var totalTime = new TimeSpan();
+            var totalDifficulty = 0;
+
+            foreach(TourLog tourLog in tourLogs)
+            {
+                totalRating += tourLog.Rating;
+                totalDifficulty += (int)tourLog.Difficulty;
+                totalTime = totalTime.Add(tourLog.TotalTime);
+            }
+
+            var averageRating = (double)totalRating / (double)tourLogs.Count;
+            var averageDifficulty = (double)totalDifficulty / (double)tourLogs.Count;
+            var averageTime = totalTime.Divide(tourLogs.Count);
+
+            Table table = new Table(4);
+            table.AddHeaderCell("Average Difficulty");
+            table.AddHeaderCell("Average Time");
+            table.AddHeaderCell("Average Rating");
+            table.AddHeaderCell("Amount of Logs");
+
+            table.AddCell(((Difficulty)averageDifficulty).ToString());
+            table.AddCell(averageTime.ToString());
+            table.AddCell(averageRating.ToString());
+            table.AddCell(tourLogs.Count.ToString());
+
+            document.Add(table);
         }
 
         public void CreateReport(IEnumerable<Tour> tours, string filepath)
