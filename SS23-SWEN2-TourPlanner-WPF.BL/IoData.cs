@@ -76,6 +76,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                     Tour tour = new Tour("");
                     tour.ToTour(lines[i]);
                     if (tour.Id != -1)
+                        tour.Id = 0;
                         tours.Add(tour);
                 }
                 return tours;

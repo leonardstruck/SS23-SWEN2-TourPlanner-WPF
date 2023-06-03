@@ -187,18 +187,16 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             {
                 var openFileDialog = fileDialogService.OpenFileDialog();
                 openFileDialog.Filter = "CSV Files (*.csv)|*.csv";
-                //openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
 
                 openFileDialog.ShowDialog();
 
                 try
                 {
-                    var importedTours = await toursManager.ImportData(openFileDialog.FileName);
-                    //IEnumerable<Tour> additionalTours = importedTours.Where(tour => !Tours.Any(x => x.Equals(tour))).ToList();
-                    
+                    IEnumerable<Tour> importedTours = await toursManager.ImportData(openFileDialog.FileName);
+                    var count = importedTours.Count();
                     messageBoxService.Show(
-                        $"Imported Tours successfully",
+                        $"Imported {count} Tours successfully",
                         "Success",
                         MessageBoxButton.OK
                     );

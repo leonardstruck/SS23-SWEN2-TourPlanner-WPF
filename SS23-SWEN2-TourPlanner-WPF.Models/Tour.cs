@@ -92,9 +92,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
                             // item ist der String mit allen werten von einem log
                             TourLog tl = new TourLog();
                             tl.ToTourLog(item);
-                            tl.Id = 0;
+                            
                             if (tl.Id != -1)
                             {
+                                tl.Id = 0;
                                 tour.TourLogs.Add(tl);
                             }
                         }

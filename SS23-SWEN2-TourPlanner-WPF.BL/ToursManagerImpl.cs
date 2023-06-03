@@ -162,7 +162,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             var newTours = io.ImportData(fileName);
             List<Task> tasks = newTours.Select(async tour =>
             {
-                tour.Id = 0;
                 await AddTour(tour);
             }).ToList();
 
