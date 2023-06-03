@@ -58,6 +58,18 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                 tour.Distance = route.Distance;
                 tour.Time = route.Time;
 
+                var routeUrl = mapQuestAPI.Directions.GetUri(new Directions.GetUriReq
+                {
+                    DestLabel = tour.To,
+                    DestLat = route.To.Lat,
+                    DestLon = route.To.Lng,
+                    StartLabel = tour.From,
+                    StartLat = route.From.Lat,
+                    StartLon = route.From.Lng,
+                });
+
+                tour.MapQuestUri = routeUrl.ToString();
+
                 var map = await mapQuestAPI.StaticMap.GetMap(new MapQuest.StaticMapAPI.GetMapReq { BoundingBox = route.BoundingBox, Height = 600, Width = 800, SessionId = route.SessionId });
 
                 var path = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TourPlanner", "Maps");

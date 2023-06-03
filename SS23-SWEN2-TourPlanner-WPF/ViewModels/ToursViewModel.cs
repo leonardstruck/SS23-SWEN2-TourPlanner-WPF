@@ -5,6 +5,7 @@ using SS23_SWEN2_TourPlanner_WPF.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         public RelayCommand EditTourCommand { get; }
         public RelayCommand ExportReportCommand { get; }
         public RelayCommand ExportSingleReportCommand { get; }
+        public RelayCommand OpenOnMapQuest { get; }
 
         public bool DisableConfirmationDialogs = false;
 
@@ -150,6 +152,13 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     Report report = new();
                     report.CreateReport(CurrentTour, saveFileDialog.FileName);
                 }
+            });
+            this.OpenOnMapQuest = new RelayCommand(_ =>
+            {
+                if (CurrentTour == null || CurrentTour.MapQuestUri == null)
+                    return;
+
+                Process.Start(new ProcessStartInfo() { FileName = CurrentTour.MapQuestUri, UseShellExecute = true });
             });
 
             // handle errors from tourmanager

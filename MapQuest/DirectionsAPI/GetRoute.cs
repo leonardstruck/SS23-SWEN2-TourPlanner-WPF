@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Web;
@@ -71,7 +72,21 @@ namespace MapQuest.DirectionsAPI
 
                 // ROUTE -> DISTANCE
                 res.Distance = double.Parse(routeNode["distance"]!.ToString(), CultureInfo.InvariantCulture);
+
+                // ROUTE -> LOCATIONS
+                var locationsNode = routeNode["locations"] as JsonArray ?? throw new Exception("no locations received");
+
+                var from = locationsNode[0]!;
+                var to = locationsNode[1]!;
+
+                var fromLatLng = from["latLng"]!;
+                var toLatLng = to["latLng"]!;
+
+                res.From = new() { Lat = float.Parse(fromLatLng["lat"]!.ToString()), Lng = float.Parse(fromLatLng["lng"]!.ToString()) };
+                res.To = new() { Lat = float.Parse(toLatLng["lat"]!.ToString()), Lng = float.Parse(toLatLng["lng"]!.ToString()) };
+
                 return res;
+
             } catch (Exception e)
             {
                 // Wrap Exception
@@ -94,6 +109,8 @@ namespace MapQuest.DirectionsAPI
             public BoundingBox BoundingBox;
             public TimeSpan Time;
             public double Distance;
+            public LatLng From;
+            public LatLng To;
         }
 
         public enum RouteType
@@ -109,6 +126,13 @@ namespace MapQuest.DirectionsAPI
             M
         }
 
+
+
+        public struct LatLng
+        {
+            public float Lat;
+            public float Lng;
+        }
        
     }
     public class GetRouteException : Exception

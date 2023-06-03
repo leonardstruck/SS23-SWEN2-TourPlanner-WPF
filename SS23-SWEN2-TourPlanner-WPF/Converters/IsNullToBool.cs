@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace SS23_SWEN2_TourPlanner_WPF.Converters
 {
-    public class StringIsNullToBool : IValueConverter
+    public class IsNullToBool : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -19,6 +19,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.Converters
                     return true;
                 }
             }
+
+            if(value == null) { return true; }
 
             return false;
         }
