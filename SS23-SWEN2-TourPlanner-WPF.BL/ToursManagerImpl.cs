@@ -24,7 +24,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         public event EventHandler<Tour>? TourChanged;
         public event EventHandler<Tour>? TourAdded;
         public event EventHandler<Tour>? TourRemoved;
-
+        public event EventHandler<bool>? ImportSucceeded;
         public event EventHandler<TourError>? TourError;
 
         public ToursManagerImpl(IDataManager dataManager) {  
@@ -158,16 +158,25 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
         public async Task<IEnumerable<Tour>> ImportData(string fileName)
         {
-            var io = new IoData();
-            var newTours = io.ImportData(fileName);
-            List<Task> tasks = newTours.Select(async tour =>
+            try
             {
-                await AddTour(tour);
-            }).ToList();
+                var io = new IoData();
+                var newTours = io.ImportData(fileName);
+                List<Task> tasks = newTours.Select(async tour =>
+                {
+                    await AddTour(tour);
+                }).ToList();
 
-            await Task.WhenAll(tasks);
-
-            return newTours;
+                await Task.WhenAll(tasks);
+                ImportSucceeded?.Invoke(this, true);
+                return newTours;
+            } 
+            catch(Exception e)
+            {
+                ImportSucceeded?.Invoke(this, false);
+                return new List<Tour>();
+            }
+            
         }
     }
 }

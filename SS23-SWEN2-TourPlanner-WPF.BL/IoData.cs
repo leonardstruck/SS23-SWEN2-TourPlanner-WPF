@@ -33,13 +33,13 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                 StringBuilder csvData = new StringBuilder();
 
                 // Append the header row
-                string headerRow = string.Join(",", properties.Select(prop => prop.Name));
+                string headerRow = string.Join(",", properties.Select(prop => EscapeValue(prop.Name)));
                 csvData.AppendLine(headerRow);
 
                 // Append the data rows
                 foreach (Tour data in tours)
                 {
-                    string dataRow = string.Join(",", properties.Select(p => ConvertValueToString(p.GetValue(data))));
+                    string dataRow = string.Join(",", properties.Select(p => EscapeValue(ConvertValueToString(p.GetValue(data)))));
                     csvData.AppendLine(dataRow);
                 }
 
@@ -51,6 +51,17 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                 //MessageBox.Show("Data export failed.");
             }
             
+        }
+
+        // Helper method to escape a value if it contains a comma
+        string EscapeValue(string value)
+        {
+            if (value.Contains(","))
+            {
+                // Enclose the value in quotes and double any existing quotes
+                value = "\"" + value.Replace("\"", "\"\"") + "\"";
+            }
+            return value;
         }
 
         public IEnumerable<Tour> ImportData(string fileName)

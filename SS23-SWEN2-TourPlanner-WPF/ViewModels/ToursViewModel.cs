@@ -80,18 +80,18 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     if (App.Current.Services.GetService(typeof(AddTourViewModel)) is AddTourViewModel addTourViewModel)
                     {
                         var addTourDialog = new AddTourDialog(addTourViewModel);
-                        
+
                         addTourDialog.Show();
 
                         // listen for addTour Events
                         addTourViewModel.AddButtonClicked += (_, tour) =>
                         {
                             addTourViewModel.IsEnabled = false;
-                            var task = Task.Run(() => toursManager.AddTour(tour));    
+                            var task = Task.Run(() => toursManager.AddTour(tour));
                             addTourDialog?.Close();
                         };
 
-                       
+
                     }
                 }
             );
@@ -104,8 +104,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
-                      toursManager.DeleteTour(CurrentTour);
-                      CurrentTour = null;
+                        toursManager.DeleteTour(CurrentTour);
+                        CurrentTour = null;
                     }
                 }
             });
@@ -172,16 +172,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                         );
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     // log exception
-                    messageBoxService.Show(
-                        "An Error occured while exporting the Tours", 
-                        "Error",
-                        MessageBoxButton.OK
-                        );
+                    
                 }
-                
+
             });
             this.ImportDataCommand = new RelayCommand(async _ =>
             {
@@ -193,15 +189,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 
                 try
                 {
-                    IEnumerable<Tour> importedTours = await toursManager.ImportData(openFileDialog.FileName);
-                    var count = importedTours.Count();
-                    messageBoxService.Show(
-                        $"Imported {count} Tours successfully",
-                        "Success",
-                        MessageBoxButton.OK
-                    );
+                    var task = Task.Run(() => toursManager.ImportData(openFileDialog.FileName));
+                    
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     messageBoxService.Show(
                         $"An Error occured",
@@ -209,8 +200,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                         MessageBoxButton.OK
                     );
                 }
-
-                
             });
 
             // handle errors from tourmanager
@@ -231,6 +220,21 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                         messageBoxService.Show($"An unhandled exception occurred: {tourError.Exception?.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         break;
                 }
+            };
+            toursManager.ImportSucceeded += (_, isSuccess) =>
+            {
+                if (isSuccess)
+                    messageBoxService.Show(
+                        $"Imported Tours successfully",
+                        "Success",
+                        MessageBoxButton.OK
+                    );
+                else
+                    messageBoxService.Show(
+                        "An Error occured while exporting the Tours",
+                        "Error",
+                        MessageBoxButton.OK
+                    );
             };
             
             // add tour if tourmanager emits event
