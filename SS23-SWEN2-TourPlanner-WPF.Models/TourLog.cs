@@ -69,10 +69,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
         }
         public static bool operator ==(TourLog? left, TourLog? right)
         {
-            if (left == null && right == null)
+            if (left is null && right is null)
                 return true;
 
-            if(left == null || right == null) 
+            if(left is null || right is null) 
                 return false;
 
             return (
