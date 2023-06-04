@@ -11,9 +11,9 @@ namespace SS23_SWEN2_TourPlanner_WPF
     {
         public event EventHandler? CanExecuteChanged;
 
-        private Action<object> _execute;
+        private readonly Action<object?> _execute;
 
-        public RelayCommand(Action<object> execute)
+        public RelayCommand(Action<object?> execute)
         {
             _execute = execute;
         }

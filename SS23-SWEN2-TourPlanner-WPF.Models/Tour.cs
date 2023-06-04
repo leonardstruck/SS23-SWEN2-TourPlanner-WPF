@@ -228,10 +228,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
             return parts;
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object? obj)
         {
             //Check for null and compare run-time types.
-            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            if (obj is null || !this.GetType().Equals(obj.GetType()))
             {
                 return false;
             }
@@ -242,6 +242,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
                     this.Id == temp.Id
                 );
             }
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(HashCode.Combine(Id, Name, Description, From, To, TransportType), Distance, Time, Image, TourLogs, Maneuvers);
         }
     }
 }

@@ -23,6 +23,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 {
     public class IoData
     {
+        private static readonly ILoggerWrapper logger = LoggerFactory.GetLogger(typeof(IoData).ToString());
+
         public void ExportData(IEnumerable<Tour> tours, string fileName)
         {
             
@@ -39,7 +41,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                 // Append the data rows
                 foreach (Tour data in tours)
                 {
-                    string dataRow = string.Join(",", properties.Select(p => EscapeValue(ConvertValueToString(p.GetValue(data)))));
+                    string dataRow = string.Join(",", properties.Select(p => EscapeValue(ConvertValueToString(p.GetValue(data) ?? string.Empty))));
                     csvData.AppendLine(dataRow);
                 }
 
@@ -47,8 +49,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             }
             catch (Exception e)
             {
-                throw; 
-                //MessageBox.Show("Data export failed.");
+                logger.Error($"Failed to export data: {e.Message}");
+                throw;
             }
             
         }
@@ -124,7 +126,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             }
             else
             {
-                return value?.ToString();
+                return value.ToString() ?? string.Empty;
             }
         }
     }
