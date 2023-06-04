@@ -25,11 +25,12 @@ namespace SS23_SWEN2_TourPlanner_WPF.Views
         public SearchView()
         {
             InitializeComponent();
-            var toursVM = (ToursViewModel?)App.Current.Services.GetService(typeof(ToursViewModel));
-            var toursManager = (IToursManager?)App.Current.Services.GetService(typeof(IToursManager));
+            var toursVM = App.Current.Services.GetService(typeof(ToursViewModel)) as ToursViewModel ?? throw new Exception("Failed to get ToursViewModel");
+            var toursManager = App.Current.Services.GetService(typeof(IToursManager)) as IToursManager ?? throw new Exception("Failed to get ToursManager");
+            var messageBoxService = App.Current.Services.GetService(typeof(IMessageBoxService)) as IMessageBoxService ?? throw new Exception("Failed to get MessageBoxService");
             if(toursVM != null && toursManager != null)
             {
-                this.DataContext = new SearchViewModel(toursVM, toursManager);
+                this.DataContext = new SearchViewModel(toursVM, toursManager, messageBoxService);
             }
         }
     }
