@@ -41,6 +41,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                 if (tour.From.ToLower().Contains(searchTerm)) return true;
                 if (tour.To.ToLower().Contains(searchTerm)) return true;
                 if (tour.TransportType.ToString().ToLower().Contains(searchTerm)) return true;
+                if (searchTerm.Contains("childfriendly") && tour.IsChildfriendly()) return true;
+                if (searchTerm.Contains("unsuitable") && !tour.IsChildfriendly()) return true;
+                if (string.Concat(tour.Distance.ToString("N1"), "km").ToLower().Contains(searchTerm)) return true;
+                if (tour.Time.ToString("hh\\:mm").Contains(searchTerm)) return true;
 
                 return false;
             }).ToList();
@@ -52,7 +56,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             {
                 if (tourLog.Comment.ToLower().Contains(searchTerm)) return true;
                 if (tourLog.Difficulty.ToString().ToLower().Contains(searchTerm)) return true;
-
+                if (tourLog.TotalTime.ToString("hh\\:mm\\:ss").Contains(searchTerm)) return true;
+                if (tourLog.DateTime.ToString().Contains(searchTerm)) return true;
                 return false;
             }).ToList();
         }
