@@ -1,5 +1,6 @@
 ﻿using SS23_SWEN2_TourPlanner_WPF;
 using SS23_SWEN2_TourPlanner_WPF.BL;
+using SS23_SWEN2_TourPlanner_WPF.Log4Net;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using SS23_SWEN2_TourPlanner_WPF.Views;
 using SS23_SWEN2_TourPlanner_WPF.Windows;
