@@ -38,6 +38,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                 // load tour from toursmanager
                 _currentTour = value;
                 OnPropertyChanged(nameof(CurrentTour));
+                OnPropertyChanged(nameof(Childfriendlyness));
                 OnPropertyChanged(nameof(TourSelected));
 
                 if (_currentTour == null)
@@ -48,6 +49,14 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
  
                 OnPropertyChanged(nameof(TourLogsVM));
             } 
+        }
+
+        public string Childfriendlyness {
+            get {
+                if (CurrentTour == null)
+                    return "";
+                return CurrentTour.IsChildfriendly() ? "Childfriendly" : "Not Childfriendly";
+            }
         }
 
         private Tour? _currentTour;

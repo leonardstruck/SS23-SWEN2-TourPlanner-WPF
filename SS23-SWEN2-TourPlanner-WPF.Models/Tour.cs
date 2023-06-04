@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace SS23_SWEN2_TourPlanner_WPF.Models
@@ -67,6 +68,69 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
             } 
         }
 
+        public bool IsChildfriendly()
+        {
+            // man merke an dass ich keine Ahnung habe was Kinder können...
+
+            if (TransportType == TourTransportType.Auto && TimeSpan.Compare(Time, TimeSpan.FromHours(2)) == 1)
+                return false;
+
+            if (TransportType == TourTransportType.Bicycle && TimeSpan.Compare(Time, TimeSpan.FromHours(1)) == 1)
+                return false;
+
+            if (TransportType == TourTransportType.Walking && TimeSpan.Compare(Time, TimeSpan.FromMinutes(30)) == 1)
+                return false;
+
+            if (GetAverageDifficulty() != Difficulty.Easy)
+                return false;
+
+            return true;
+        }
+
+        public TimeSpan GetAverageTime()
+        {
+            if (TourLogs.Count == 0)
+                return new TimeSpan();
+
+            var totalTime = new TimeSpan();
+
+            foreach (TourLog tourLog in TourLogs)
+            {
+                totalTime = totalTime.Add(tourLog.TotalTime);
+            }
+
+            return totalTime.Divide(TourLogs.Count);
+        }
+
+        public double GetAverageRating()
+        {
+            if (TourLogs.Count == 0)
+                return 0;
+
+            var totalRating = 0;
+
+            foreach (TourLog tourLog in TourLogs)
+            {
+                totalRating += tourLog.Rating;
+            }
+            return totalRating / TourLogs.Count;
+        }
+
+        public Difficulty GetAverageDifficulty()
+        {
+            if (TourLogs.Count == 0)
+                return 0;
+
+            var totalDifficulty = 0;
+
+            foreach (TourLog tourLog in TourLogs)
+            {
+                totalDifficulty += (int)tourLog.Difficulty;
+            }
+
+            return (Difficulty)(totalDifficulty / TourLogs.Count);
+        }
+      
         public void ToTour(string line)
         {
             
