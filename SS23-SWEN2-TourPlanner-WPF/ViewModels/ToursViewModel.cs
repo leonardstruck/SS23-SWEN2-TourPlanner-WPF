@@ -33,6 +33,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         public RelayCommand ExportDataCommand { get; }
         public RelayCommand ImportDataCommand { get; }
 
+
         public bool DisableConfirmationDialogs = false;
 
         public Tour? CurrentTour { 
@@ -295,6 +296,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                     }
                 });
                 
+            };
+            toursManager.TourLogUpdated += (_, tourLog) =>
+            {
+                OnPropertyChanged(nameof(Childfriendlyness));
+
             };
         }
 

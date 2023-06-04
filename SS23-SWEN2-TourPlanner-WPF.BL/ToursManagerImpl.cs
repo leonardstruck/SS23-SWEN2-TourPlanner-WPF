@@ -26,6 +26,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         public event EventHandler<Tour>? TourRemoved;
         public event EventHandler<bool>? ImportSucceeded;
         public event EventHandler<TourError>? TourError;
+        public event EventHandler<TourLog>? TourLogUpdated;
 
         public ToursManagerImpl(IDataManager dataManager) {  
             _dataManager = dataManager; 
@@ -129,6 +130,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         {
             logger.Debug($"Add TourLog to {tour.Id}");
             _dataManager.AddTourLog(tour, tourLog);
+            TourLogUpdated?.Invoke(this, tourLog);
         }
 
         public void DeleteTour(Tour tour)
@@ -148,11 +150,13 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         {
             logger.Debug($"Delete TourLog {tourLog.Id} from {tour.Id}");
             _dataManager.DeleteTourLog(tour, tourLog);
+            TourLogUpdated?.Invoke(this, tourLog);
         }
 
         public void EditTourLog(TourLog currentTourLog)
         {
             _dataManager.EditTourLog(currentTourLog);
+            TourLogUpdated?.Invoke(this, currentTourLog);
         }
         
         public void ExportData(IEnumerable<Tour> tours, string fileName)
