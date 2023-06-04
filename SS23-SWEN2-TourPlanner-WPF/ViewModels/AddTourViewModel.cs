@@ -1,4 +1,5 @@
-﻿using SS23_SWEN2_TourPlanner_WPF.Models;
+﻿using SS23_SWEN2_TourPlanner_WPF.BL;
+using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,9 +82,20 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             }
         }
 
-        public AddTourViewModel() {
+        public AddTourViewModel(IMessageBoxService messageBoxService) {
             ExecuteCommandAdd = new RelayCommand(param =>
             {
+                if (string.IsNullOrWhiteSpace(_from) || string.IsNullOrWhiteSpace(_to))
+                {
+                    messageBoxService.Show("Please provide both from and to addresses for your tour.");
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(_name))
+                {
+                    messageBoxService.Show("Please provide a name for your tour.");
+                    return;
+                }
+
                 var tour = new Tour(_name)
                 {
                     Description = _description,
