@@ -187,19 +187,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 
                 openFileDialog.ShowDialog();
 
-                try
-                {
-                    var task = Task.Run(() => toursManager.ImportData(openFileDialog.FileName));
-                    
-                }
-                catch (Exception e)
-                {
-                    messageBoxService.Show(
-                        $"An Error occured",
-                        "Error",
-                        MessageBoxButton.OK
-                    );
-                }
+                var task = Task.Run(() => toursManager.ImportData(openFileDialog.FileName));
+                
             });
 
             // handle errors from tourmanager
