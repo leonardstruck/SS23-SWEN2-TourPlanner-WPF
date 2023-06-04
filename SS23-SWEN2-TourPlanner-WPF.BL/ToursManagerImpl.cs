@@ -98,8 +98,9 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         {
             if (IsApiCallNecessary(t))
             {
-                // clear image
+                // clear image and maneuvers to display progress bar
                 t.Image = string.Empty;
+                t.Maneuvers.Clear();
 
                 Task.Run(() => HandleAPICalls(t));
             }
