@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
@@ -14,6 +15,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
     {
         private readonly ToursViewModel _toursViewModel;
         private readonly IToursManager _tourManager;
+        private readonly IMessageBoxService _messageBoxService;
         private readonly Search search;
 
         private readonly BackgroundWorker _searchWorker;
@@ -44,9 +46,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
         }
 
 
-        public SearchViewModel(ToursViewModel toursViewModel, IToursManager tourManager)
+        public SearchViewModel(ToursViewModel toursViewModel, IToursManager tourManager, IMessageBoxService messageBoxService)
         {
             _toursViewModel = toursViewModel;
+            _messageBoxService = messageBoxService;
             _searchWorker = new BackgroundWorker();
             _searchWorker.DoWork += SearchWorker_DoWork!;
             _searchWorker.RunWorkerCompleted += SearchWorker_WorkCompleted!;
@@ -55,6 +58,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 
             SearchButtonClick = new RelayCommand(_ =>
             {
+                if (string.IsNullOrWhiteSpace(_searchTerm))
+                {
+                    _messageBoxService.Show("You have to provide a searchterm", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
                 if (!_searchWorker.IsBusy)
                 {
                     _searchWorker.RunWorkerAsync();

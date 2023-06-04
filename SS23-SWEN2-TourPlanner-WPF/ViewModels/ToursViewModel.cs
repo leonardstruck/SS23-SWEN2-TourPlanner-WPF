@@ -132,7 +132,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                 if (CurrentTour == null)
                     return;
 
-                var editTourVM = new EditTourViewModel(CurrentTour);
+                var editTourVM = new EditTourViewModel(CurrentTour, messageBoxService);
 
                 var editTourDialog = new EditTourDialog(editTourVM);
                 editTourDialog.Show();
