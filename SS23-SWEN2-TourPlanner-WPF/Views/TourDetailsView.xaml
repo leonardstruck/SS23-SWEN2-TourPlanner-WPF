@@ -12,39 +12,51 @@
     <UserControl.Resources>
         <converters:StringIsNullToBool  x:Key="StringIsNullToBool" />
         <converters:ListIsEmptyToBool x:Key="ListIsEmptyToBool" />
+        <converters:NullToVisibility x:Key="NullToVisibility" />
     </UserControl.Resources>
     <DockPanel Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}" >
         <Label Content="Details" DockPanel.Dock="Top" FontWeight="DemiBold" FontSize="13"/>
         <TabControl>
             <TabItem Header="General">
                 <DockPanel>
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                        <Label FontWeight="Bold">Name:</Label>
-                        <Label Content="{Binding Path=CurrentTour.Name}" Grid.Column="1" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                        <Label FontWeight="Bold">Description:</Label>
-                        <Label Content="{Binding Path=CurrentTour.Description}" Grid.Column="1" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                        <StackPanel Orientation="Horizontal">
-                            <Label FontWeight="Bold">From:</Label>
-                            <Label Content="{Binding Path=CurrentTour.From}" Grid.Column="1" />
+                    <ScrollViewer IsTabStop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                <Label FontWeight="Bold">Name:</Label>
+                                <Label Content="{Binding Path=CurrentTour.Name}" Grid.Column="1" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                <Label FontWeight="Bold">Description:</Label>
+                                <Label Content="{Binding Path=CurrentTour.Description}" Grid.Column="1" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label FontWeight="Bold">From:</Label>
+                                    <Label Content="{Binding Path=CurrentTour.From}" Grid.Column="1" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label FontWeight="Bold">To:</Label>
+                                    <Label Content="{Binding Path=CurrentTour.To}" Grid.Column="1" />
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                <Label FontWeight="Bold">Transport Type:</Label>
+                                <Label Content="{Binding Path=CurrentTour.TransportType}" Grid.Column="1" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Visibility="{Binding Path=CurrentTour.Distance, Converter={StaticResource NullToVisibility}}">
+                                <Label FontWeight="Bold">Distance:</Label>
+                                <Label Content="{Binding Path=CurrentTour.Distance}" ContentStringFormat="{}{0:N1}km" Grid.Column="1" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Visibility="{Binding Path=CurrentTour.Time, Converter={StaticResource NullToVisibility}}">
+                                <Label FontWeight="Bold">Estimated Time (hours):</Label>
+                                <Label Content="{Binding Path=CurrentTour.Time}" Grid.Column="1" ContentStringFormat="{}{0:hh}:{0:mm}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                                <Label FontWeight="Bold">Childfriendlyness:</Label>
+                                <Label Content="{Binding Path=Childfriendlyness}" Grid.Column="1" />
+                            </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label FontWeight="Bold">To:</Label>
-                            <Label Content="{Binding Path=CurrentTour.To}" Grid.Column="1" />
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                        <Label FontWeight="Bold">Transport Type:</Label>
-                        <Label Content="{Binding Path=CurrentTour.TransportType}" Grid.Column="1" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-
-                        <Label FontWeight="Bold">Childfriendlyness:</Label>
-                        <Label Content="{Binding Path=Childfriendlyness}" Grid.Column="1" />
-                    </StackPanel>
+                    </ScrollViewer>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Route">
