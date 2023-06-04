@@ -94,6 +94,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             AddBasicInfoRow(document, tour);
             AddDescription(document, tour.Description);
             AddStatistics(document, tour);
+
             AddTourLogs(document, tour);
             AddImage(document, tour.Image);
         }
@@ -112,6 +113,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             var averageRating = tour.GetAverageRating();
             var averageDifficulty = tour.GetAverageDifficulty();
             var averageTime = tour.GetAverageTime();
+
 
             Table table = new Table(4);
             table.AddHeaderCell("Average Difficulty");

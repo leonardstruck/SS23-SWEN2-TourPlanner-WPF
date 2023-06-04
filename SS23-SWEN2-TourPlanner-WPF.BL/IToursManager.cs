@@ -16,6 +16,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         event EventHandler<TourError>? TourError;
         void EditTour(Tour t);
         bool IsApiCallNecessary(Tour t);
+        Task HandleAPICalls(Tour tour);
+
         Task AddTour(Tour t);
 
         void AddTourLog(Tour tour, TourLog tourLog);
