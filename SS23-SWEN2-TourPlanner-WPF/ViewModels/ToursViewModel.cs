@@ -59,7 +59,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
             get {
                 if (CurrentTour == null)
                     return "";
-                return CurrentTour.IsChildfriendly() ? "Childfriendly" : "Not Childfriendly";
+                return CurrentTour.IsChildfriendly() ? "childfriendly" : "unsuitable";
             }
         }
 
