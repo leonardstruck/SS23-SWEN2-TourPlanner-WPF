@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
@@ -32,6 +35,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
 
         public Tour(string Name)
         {
+            //this.Id = -1;
             this.Name = Name;
             this.Description = string.Empty;
             this.From = string.Empty;
@@ -61,6 +65,115 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
                 }
                 return new BitmapImage();
             } 
+        }
+
+        public void ToTour(string line)
+        {
+            
+            try
+            {
+                Tour tour = new Tour("");
+                PropertyInfo[] properties = typeof(Tour).GetProperties();
+                List<string> data = SplitIgnoringQuotes(line, ',');
+                for (int j = 0; j < data.Count; j++)
+                {
+                    PropertyInfo property = properties[j];
+                    string value = data[j];
+                    if (property.PropertyType == typeof(double))
+                    {
+
+                        property.SetValue(tour, double.Parse(value, CultureInfo.InvariantCulture));
+                    }
+                    else if (property.PropertyType == typeof(List<TourLog>))
+                    {
+                        // Deserialize the list from the comma-separated string
+                        string[] listData = value.Split(new string[] { "&&&" }, StringSplitOptions.None);
+                        foreach (string item in listData)
+                        {
+                            // item ist der String mit allen werten von einem log
+                            TourLog tl = new TourLog();
+                            tl.ToTourLog(item);
+                            
+                            if (tl.Id != -1)
+                            {
+                                tl.Id = 0;
+                                tour.TourLogs.Add(tl);
+                            }
+                        }
+                    }
+                    else if (property.PropertyType == typeof(BitmapImage))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        // value muss noch richtig geparst werden
+                        var converter = TypeDescriptor.GetConverter(property.PropertyType);
+                        var convertedObject = converter.ConvertFromString(value);
+                        property.SetValue(tour, convertedObject);
+                    }
+                }
+
+                this.Id = tour.Id;
+                this.Name = tour.Name;
+                this.Description = tour.Description;
+                this.From = tour.From;
+                this.To = tour.To;
+                this.TransportType = tour.TransportType;
+                this.Distance = tour.Distance;
+                this.Time = tour.Time;
+                this.Image = tour.Image;
+                this.TourLogs = tour.TourLogs;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
+        }
+
+        public static List<string> SplitIgnoringQuotes(string input, char delimiter)
+        {
+            List<string> parts = new List<string>();
+            StringBuilder currentPart = new StringBuilder();
+            bool insideQuotes = false;
+
+            foreach (char c in input)
+            {
+                if (c == delimiter && !insideQuotes)
+                {
+                    parts.Add(currentPart.ToString());
+                    currentPart.Clear();
+                }
+                else if (c == '"')
+                {
+                    insideQuotes = !insideQuotes;
+                }
+                else
+                {
+                    currentPart.Append(c);
+                }
+            }
+
+            parts.Add(currentPart.ToString());
+
+            return parts;
+        }
+
+        public override bool Equals(Object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Tour temp = (Tour)obj;
+                return (
+                    this.Id == temp.Id
+                );
+            }
         }
     }
 }

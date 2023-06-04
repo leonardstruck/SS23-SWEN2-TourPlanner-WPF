@@ -1,6 +1,7 @@
 ﻿using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         event EventHandler<Tour>? TourChanged;
         event EventHandler<Tour>? TourAdded;
         event EventHandler<Tour>? TourRemoved;
+        event EventHandler<bool>? ImportSucceeded;
 
         event EventHandler<TourError>? TourError;
         void EditTour(Tour t);
@@ -27,6 +29,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         void DeleteTourLog(Tour tour, TourLog currentTourLog);
         IEnumerable<Tour> GetTours();
         IEnumerable<TourLog> GetTourLogs();
+        Task<IEnumerable<Tour>> ImportData(string fileName);
+        void ExportData(IEnumerable<Tour> tours, string fileName);
     }
 
     public struct TourError
