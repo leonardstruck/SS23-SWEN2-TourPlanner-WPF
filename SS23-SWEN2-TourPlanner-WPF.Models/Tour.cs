@@ -73,8 +73,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
             {
                 Tour tour = new Tour("");
                 PropertyInfo[] properties = typeof(Tour).GetProperties();
-                string[] data = line.Split(',');
-                for (int j = 0; j < data.Length; j++)
+                List<string> data = SplitIgnoringQuotes(line, ',');
+                for (int j = 0; j < data.Count; j++)
                 {
                     PropertyInfo property = properties[j];
                     string value = data[j];
@@ -129,6 +129,34 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
                 Console.WriteLine(e.Message);
             }
             
+        }
+
+        public static List<string> SplitIgnoringQuotes(string input, char delimiter)
+        {
+            List<string> parts = new List<string>();
+            StringBuilder currentPart = new StringBuilder();
+            bool insideQuotes = false;
+
+            foreach (char c in input)
+            {
+                if (c == delimiter && !insideQuotes)
+                {
+                    parts.Add(currentPart.ToString());
+                    currentPart.Clear();
+                }
+                else if (c == '"')
+                {
+                    insideQuotes = !insideQuotes;
+                }
+                else
+                {
+                    currentPart.Append(c);
+                }
+            }
+
+            parts.Add(currentPart.ToString());
+
+            return parts;
         }
 
         public override bool Equals(Object obj)
