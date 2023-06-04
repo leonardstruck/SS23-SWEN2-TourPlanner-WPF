@@ -148,6 +148,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
 
                         property.SetValue(tour, double.Parse(value, CultureInfo.InvariantCulture));
                     }
+                    else if (property.PropertyType == typeof(List<string>))
+                    {
+                        continue;
+                    }
                     else if (property.PropertyType == typeof(List<TourLog>))
                     {
                         // Deserialize the list from the comma-separated string
