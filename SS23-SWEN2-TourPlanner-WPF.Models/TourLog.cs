@@ -89,10 +89,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
         {
             return !(left == right);
         }
-        public override bool Equals(Object obj)
+        public override bool Equals(object? obj)
         {
             //Check for null and compare run-time types.
-            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            if (obj is null || !this.GetType().Equals(obj.GetType()))
             {
                 return false;
             }
@@ -121,6 +121,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.Models
                 TotalTime = this.TotalTime,
                 Rating = this.Rating
             };
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, DateTime, Comment, Difficulty, TotalTime, Rating);
         }
     }
 
