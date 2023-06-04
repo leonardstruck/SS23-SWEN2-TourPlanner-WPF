@@ -106,9 +106,19 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             {
                 // Serialize the list into a comma-separated string
                 string serializedList = string.Empty;
+                int itemCount = listValue.Count;
+                int currentIndex = 0;
+
                 foreach (object item in listValue)
                 {
-                    serializedList += item.ToString() + "&&&";
+                    serializedList += item.ToString();
+
+                    if (currentIndex != itemCount - 1)
+                    {
+                        serializedList += "&&&";
+                    }
+
+                    currentIndex++;
                 }
                 return serializedList;
             }
