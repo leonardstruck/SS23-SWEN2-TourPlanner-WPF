@@ -4,6 +4,7 @@ using SS23_SWEN2_TourPlanner_WPF.Log4Net;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -19,10 +20,11 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         private readonly IDataManager _dataManager;
         private readonly MapQuestAPI mapQuestAPI;
 
+        //public ToursManagerImpl(IDataManager dataManager) { _dataManager = dataManager; }
         public event EventHandler<Tour>? TourChanged;
         public event EventHandler<Tour>? TourAdded;
         public event EventHandler<Tour>? TourRemoved;
-
+        public event EventHandler<bool>? ImportSucceeded;
         public event EventHandler<TourError>? TourError;
 
         public ToursManagerImpl(IDataManager dataManager) {  
@@ -115,6 +117,10 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         {
             return _dataManager.GetTours();
         }
+        public IEnumerable<TourLog> GetTourLogs()
+        {
+            return _dataManager.GetTourLogs();
+        }
 
         public void AddTourLog(Tour tour, TourLog tourLog)
         {
@@ -145,10 +151,34 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         {
             _dataManager.EditTourLog(currentTourLog);
         }
-
-        public IEnumerable<TourLog> GetTourLogs()
+        
+        public void ExportData(IEnumerable<Tour> tours, string fileName)
         {
-            return _dataManager.GetTourLogs();
+            var io = new IoData();
+            io.ExportData(tours, fileName);
+        }
+
+        public async Task<IEnumerable<Tour>> ImportData(string fileName)
+        {
+            try
+            {
+                var io = new IoData();
+                var newTours = io.ImportData(fileName);
+                List<Task> tasks = newTours.Select(async tour =>
+                {
+                    await AddTour(tour);
+                }).ToList();
+
+                await Task.WhenAll(tasks);
+                ImportSucceeded?.Invoke(this, true);
+                return newTours;
+            } 
+            catch(Exception e)
+            {
+                ImportSucceeded?.Invoke(this, false);
+                return new List<Tour>();
+            }
+            
         }
     }
 }
