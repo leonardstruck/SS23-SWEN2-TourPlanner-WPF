@@ -41,7 +41,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                 // Append the data rows
                 foreach (Tour data in tours)
                 {
-                    string dataRow = string.Join(",", properties.Select(p => EscapeValue(ConvertValueToString(p.GetValue(data)))));
+                    string dataRow = string.Join(",", properties.Select(p => EscapeValue(ConvertValueToString(p.GetValue(data) ?? string.Empty))));
                     csvData.AppendLine(dataRow);
                 }
 
@@ -126,7 +126,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             }
             else
             {
-                return value?.ToString();
+                return value.ToString() ?? string.Empty;
             }
         }
     }
