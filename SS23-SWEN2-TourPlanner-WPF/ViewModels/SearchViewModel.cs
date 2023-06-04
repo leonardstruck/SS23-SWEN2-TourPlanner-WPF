@@ -1,4 +1,5 @@
 ﻿using SS23_SWEN2_TourPlanner_WPF.BL;
+using SS23_SWEN2_TourPlanner_WPF.Log4Net;
 using SS23_SWEN2_TourPlanner_WPF.Models;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 {
     internal class SearchViewModel : BaseViewModel
     {
+        private static readonly ILoggerWrapper logger = LoggerFactory.GetLogger(typeof(SearchViewModel).ToString());
+
         private readonly ToursViewModel _toursViewModel;
         private readonly IToursManager _tourManager;
         private readonly IMessageBoxService _messageBoxService;
@@ -89,6 +92,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 
         private void SearchWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            logger.Debug($"Starting search for {SearchTerm} in the background");
             if (sender is not BackgroundWorker worker)
                 return;
 
