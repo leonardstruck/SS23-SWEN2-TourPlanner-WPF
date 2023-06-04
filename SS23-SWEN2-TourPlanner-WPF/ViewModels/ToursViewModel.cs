@@ -197,7 +197,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                 }
 
             });
-            this.ImportDataCommand = new RelayCommand(async _ =>
+            this.ImportDataCommand = new RelayCommand(_ =>
             {
                 var openFileDialog = fileDialogService.OpenFileDialog();
                 openFileDialog.Filter = "CSV Files (*.csv)|*.csv";
