@@ -16,6 +16,8 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
 {
     public class ToursViewModel : BaseViewModel
     {
+        private static readonly ILoggerWrapper logger = LoggerFactory.GetLogger(typeof(ToursViewModel).ToString());
+
         private readonly IToursManager toursmanager;
         private readonly IMessageBoxService messageBoxService;
         private readonly IFileDialogService fileDialogService;
@@ -192,8 +194,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.ViewModels
                 }
                 catch (Exception e)
                 {
-                    // log exception
-                    
+                    logger.Error($"failed to export data: {e.Message}");
                 }
 
             });

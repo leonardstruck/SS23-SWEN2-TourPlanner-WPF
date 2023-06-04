@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF.Log4Net\SS23-SWEN2-TourPlanner-WPF.Log4Net.csproj" />
     <ProjectReference Include="..\SS23-SWEN2-TourPlanner-WPF.Models\SS23-SWEN2-TourPlanner-WPF.Models.csproj" />
   </ItemGroup>
 

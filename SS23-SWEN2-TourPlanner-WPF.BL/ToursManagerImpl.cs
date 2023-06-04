@@ -35,7 +35,6 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
         public async Task AddTour(Tour t)
         {
-            logger.Debug($"Adding Tour: {t.Name}");
             var addedTour = _dataManager.AddTour(t);
             TourAdded?.Invoke(this, addedTour);
 
@@ -45,6 +44,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
 
         public async Task HandleAPICalls(Tour tour)
         {
+            logger.Debug($"Handling API-Calls in the Background for Tour: {tour.Id}");
             try
             {
                 var routeType = tour.TransportType switch
@@ -78,7 +78,9 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             {
                 this.TourError?.Invoke(this, new TourError() { Exception = ex, Tour = tour });;
                 return;
-            } 
+            } finally {
+                logger.Debug($"Sucessfully handled API-Calls for Tour: {tour.Id}");
+            }
 
 
         }
@@ -100,6 +102,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
         {
             if (IsApiCallNecessary(t))
             {
+                logger.Debug($"Changes to tour {t.Id} require refetching information from API");
                 // clear image and maneuvers to display progress bar
                 t.Image = string.Empty;
                 t.Maneuvers.Clear();
@@ -107,7 +110,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
                 Task.Run(() => HandleAPICalls(t));
             }
 
-            logger.Debug($"Edit Tour: {t.Id}");
+            logger.Debug($"Updating Tour: {t.Id}");
             _dataManager.EditTour(t);
 
             TourChanged?.Invoke(this, t);
@@ -175,6 +178,7 @@ namespace SS23_SWEN2_TourPlanner_WPF.BL
             } 
             catch(Exception e)
             {
+                logger.Error($"Import failed: {e.Message}");
                 ImportSucceeded?.Invoke(this, false);
                 return new List<Tour>();
             }
